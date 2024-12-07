@@ -1,0 +1,98 @@
+import { FC } from 'react'
+import {
+  Box,
+  List,
+  ListItem,
+  TextField,
+  IconButton,
+  Button
+} from '@mui/material';
+import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
+
+interface Props {
+  certifications: { name: string; date: string; }[];
+  onChange: (certifications: { name: string; date: string; }[]) => void;
+  isEditMode: boolean;
+}
+
+const Certifications: FC<Props> = ({ certifications, onChange, isEditMode }) => {
+  const handleAdd = () => {
+    onChange([...certifications, { name: '', date: '' }]);
+  };
+
+  const handleDelete = (index: number) => {
+    onChange(certifications.filter((_, i) => i !== index));
+  };
+
+  if (!isEditMode && (!certifications.length || certifications.every(cert => !cert.name && !cert.date))) {
+    return (
+      <Box sx={{ mb: 4 }}>
+        <h2>■資格</h2>
+        <Box sx={{ pl: 2 }}>なし</Box>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ mb: 4 }}>
+      <h2>■資格</h2>
+      {isEditMode ? (
+        <Box>
+          {certifications.map((cert, index) => (
+            <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+              <TextField
+                size="small"
+                value={cert.name}
+                onChange={(e) => {
+                  const newCerts = [...certifications];
+                  newCerts[index] = { ...newCerts[index], name: e.target.value };
+                  onChange(newCerts);
+                }}
+                placeholder="資格名"
+                sx={{ mr: 2, flex: 1 }}
+              />
+              <TextField
+                size="small"
+                value={cert.date}
+                onChange={(e) => {
+                  const newCerts = [...certifications];
+                  newCerts[index] = { ...newCerts[index], date: e.target.value };
+                  onChange(newCerts);
+                }}
+                placeholder="YYYY年M月"
+                sx={{ width: 120, mr: 1 }}
+              />
+              <IconButton
+                size="small"
+                onClick={() => handleDelete(index)}
+                color="error"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Box>
+          ))}
+          <Button
+            startIcon={<AddIcon />}
+            onClick={handleAdd}
+            size="small"
+            sx={{ mt: 1 }}
+          >
+            資格を追加
+          </Button>
+        </Box>
+      ) : (
+        <List sx={{ listStyleType: 'disc', pl: 4 }}>
+          {certifications
+            .filter(cert => cert.name || cert.date)
+            .map((cert, index) => (
+              <ListItem key={index} sx={{ display: 'list-item', padding: '4px 0' }}>
+                {cert.name}（{cert.date}）
+              </ListItem>
+            ))}
+        </List>
+      )}
+    </Box>
+  );
+};
+
+export default Certifications;

@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",                          // コンパイルされたJavaScriptコードのターゲットバージョン
+    "lib": ["dom", "dom.iterable", "esnext"], // プロジェクトで使用するライブラリ
+    "allowJs": true,                          // JavaScriptファイルのコンパイルを許可
+    "skipLibCheck": true,                     // 型定義ファイルの型チェックをスキップ
+    "esModuleInterop": true,                  // ESモジュールとの互換性を提供
+    "allowSyntheticDefaultImports": true,     // デフォルトインポートの合成を許可
+    "strict": true,                           // 厳格モードを有効にする（推奨）
+    "forceConsistentCasingInFileNames": true, // ファイル名の大文字小文字一貫性を強制
+    "noFallthroughCasesInSwitch": true,       // switch文でのフォールスルーを防止
+    "module": "esnext",                       // 使用するモジュール構文
+    "moduleResolution": "node",               // モジュール解決の方法を指定
+    "resolveJsonModule": true,                // JSONファイルのインポートを許可
+    "isolatedModules": true,                  // 各ファイルを独立したモジュールとして扱う
+    "jsx": "react-jsx"                        // React JSXのトランスパイラオプション
+  },
+  "include": ["src"],                         // コンパイル対象のファイルやディレクトリを指定
+  "exclude": ["node_modules"],                // 除外するファイルやディレクトリを指定
+}
