@@ -18,7 +18,8 @@ export interface TechnicalSkill {
   category: string;
   type: string;
   years: ExperienceYears;
-  level: SkillLevel;
+  level: SkillLevel | '';
+  otherType?: string;
   remarks?: string;
 }
 

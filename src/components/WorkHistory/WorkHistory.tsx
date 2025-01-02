@@ -149,7 +149,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
               <Box>
                 (勤務期間：
                 {isEditMode ? (
-                  <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <Box>
                     <TextField
                       variant="standard"
                       value={company.period.start}
@@ -175,7 +175,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                     />
                   </Box>
                 ) : (
-                  <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <Box>
                     <span>{company.period.start}</span>
                     <span style={{ margin: '0 8px' }}>～</span>
                     <span>{company.period.end}</span>
@@ -187,8 +187,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
 
             <Box sx={{ display: 'flex', gap: 4 }}>
               <Box>
-                ◆資本金：
-                {isEditMode ? (
+                ◆資本金{isEditMode ? (
                   <TextField
                     variant="standard"
                     type="number"

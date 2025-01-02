@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { TextField, Box, styled } from '@mui/material';
-import { getViewModeStyles } from '../styles/viewModeStyles';
+import {getViewModeStyles} from '../../styles/viewModeStyles';
+
 
 const NameContainer = styled(Box)({
   display: 'inline-flex',

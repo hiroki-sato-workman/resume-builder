@@ -22,6 +22,7 @@ import SelfPromotion from './components/SelfPromotion';
 import ResumeFooter from './components/ResumeFooter';
 import ViewModeToggle from './components/ViewModeToggle';
 import { getViewModeStyles } from './styles/viewModeStyles';
+import {TechnicalSkill} from './types';
 
 const theme = createTheme({
   typography: {
@@ -52,13 +53,7 @@ interface ResumeData {
   name: string;
   summary: string;
   specialties: string;
-  technicalSkills: Array<{
-    category: string;
-    type: string;
-    otherType?: string;
-    years: string;
-    level: string;
-  }>;
+  technicalSkills: TechnicalSkill[];
   workHistory: Array<{
     companyName: string;
     period: {
