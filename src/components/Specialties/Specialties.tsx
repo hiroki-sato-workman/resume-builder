@@ -1,6 +1,7 @@
 import { Box, List, ListItem, TextField } from '@mui/material';
 import { SpecialtiesType } from '../../types';
 import { SxProps } from '@mui/system';
+import {FC} from 'react';
 
 interface Props {
   specialties: SpecialtiesType
@@ -9,7 +10,7 @@ interface Props {
   viewModeStyles: {[p: string]: SxProps}
 }
 
-const Specialties = ({ specialties, isEditMode, onChange, viewModeStyles}: Props) => {
+const Specialties: FC<Props> = ({ specialties, isEditMode, onChange, viewModeStyles}: Props) => {
   return (
     <Box sx={{ mb: 4 }}>
       <h2>■得意とする分野・スキル</h2>

@@ -10,7 +10,7 @@ import {
   TextField,
 } from '@mui/material';
 import {CATEGORIES, EXPERIENCE_YEARS, SKILL_LEVELS} from '../TechnicalSkills.constant';
-import {Fragment} from 'react';
+import {FC, Fragment} from 'react';
 import {Add as AddIcon, Delete as DeleteIcon} from '@mui/icons-material';
 import {TechnicalSkill} from '../../../types';
 
@@ -19,7 +19,7 @@ interface Props {
   onChange: (skills: TechnicalSkill[]) => void;
 }
 
-const EditModeTechnicalSkills = ({technicalSkills, onChange}: Props) => {
+const EditModeTechnicalSkills: FC<Props> = ({technicalSkills, onChange}: Props) => {
   const handleAddSkill = (category: string) => {
     const newSkill: TechnicalSkill = {
       category,

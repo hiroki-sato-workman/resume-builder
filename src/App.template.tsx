@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import {FC, ReactNode} from 'react';
 import { Container, Paper } from '@mui/material';
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
   isEditMode: boolean
 }
 
-const AppTemplate = ({ children, isEditMode }: Props) => {
+const AppTemplate: FC<Props> = ({ children, isEditMode }: Props) => {
   return (
     <Container
       maxWidth={isEditMode ? "lg" : "md"}

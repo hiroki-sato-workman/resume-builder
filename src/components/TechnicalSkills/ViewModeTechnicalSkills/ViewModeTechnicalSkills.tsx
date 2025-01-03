@@ -1,12 +1,13 @@
 import {Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
 import {TechnicalSkill} from '../../../types';
 import {CATEGORIES} from '../TechnicalSkills.constant';
+import {FC} from 'react';
 
 interface Props {
   technicalSkills: TechnicalSkill[];
 }
 
-const ViewModeTechnicalSkills = ({ technicalSkills }: Props) => {
+const ViewModeTechnicalSkills: FC<Props> = ({ technicalSkills }: Props) => {
   return (
     <Table size="small">
       <TableHead>
