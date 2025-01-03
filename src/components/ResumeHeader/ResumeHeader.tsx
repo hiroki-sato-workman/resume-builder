@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import {FC, useState} from 'react';
 import { TextField, Box, styled } from '@mui/material';
 import {getViewModeStyles} from '../../styles/viewModeStyles';
 
@@ -11,12 +11,15 @@ const NameContainer = styled(Box)({
 });
 
 type Props = {
-  name: string
-  onChange: (name: string) => void
   isEditMode: boolean
 }
 
-const ResumeHeader: FC<Props> = ({ name, onChange, isEditMode }) => {
+const ResumeHeader: FC<Props> = ({ isEditMode }) => {
+  const [name, setName] = useState<string>(() => {
+    const savedData = localStorage.getItem('resumeData');
+    return savedData ? JSON.parse(savedData).name : '';
+  });
+
   const today = new Date();
   const dateString = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日現在`;
   const viewModeStyles = getViewModeStyles(isEditMode);
@@ -33,7 +36,7 @@ const ResumeHeader: FC<Props> = ({ name, onChange, isEditMode }) => {
             <TextField
               variant="standard"
               value={name}
-              onChange={(e) => onChange(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               sx={{ ...viewModeStyles.textField, width: '200px' }}
             />
           ) : (

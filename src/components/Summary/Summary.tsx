@@ -1,13 +1,17 @@
-import { FC } from 'react'
+import {FC, useState} from 'react';
 import { TextField, Box } from '@mui/material';
+import { SummaryType } from '../../types';
 
 interface Props {
-  summary: string;
-  onChange: (summary: string) => void;
   isEditMode: boolean;
 }
 
-const Summary: FC<Props> = ({ summary, onChange, isEditMode }) => {
+const Summary: FC<Props> = ({ isEditMode }) => {
+  const [summary, setSummary] = useState<SummaryType>(() => {
+    const savedData = localStorage.getItem('resumeData');
+    return savedData ? JSON.parse(savedData).summary : '';
+  });
+
   return (
     <Box sx={{ mb: 4 }}>
       <h2>■職務要約</h2>
@@ -17,7 +21,7 @@ const Summary: FC<Props> = ({ summary, onChange, isEditMode }) => {
           multiline
           minRows={3}
           value={summary}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => setSummary(e.target.value)}
         />
       ) : (
         <div style={{ whiteSpace: 'pre-wrap' }}>{summary}</div>

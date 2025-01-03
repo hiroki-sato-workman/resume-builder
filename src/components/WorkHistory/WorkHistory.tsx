@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import {FC, useState} from 'react';
 import {
   Box,
   TextField,
@@ -17,12 +17,6 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {TableCellProps} from '@mui/material/TableCell/TableCell';
 import {Role, WorkCompany} from '../../types';
-
-interface Props {
-  workHistory: WorkCompany[];
-  onChange: (history: WorkCompany[]) => void;
-  isEditMode: boolean;
-}
 
 const ROLES = [
   'メンバー',
@@ -44,9 +38,18 @@ const StyledTableCell = (props: TableCellProps) => (
   />
 );
 
-const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
+interface Props {
+  isEditMode: boolean;
+}
+
+const WorkHistory: FC<Props> = ({ isEditMode }) => {
+  const [workHistory, setWorkHistory] = useState<WorkCompany[]>(() => {
+    const savedData = localStorage.getItem('resumeData');
+    return savedData ? JSON.parse(savedData).workHistory : [];
+  });
+
   const handleAddCompany = () => {
-    onChange([...workHistory, {
+    setWorkHistory([...workHistory, {
       companyName: '',
       period: { start: '', end: '現在' },
       capital: 0,
@@ -57,7 +60,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
 
   const handleDeleteCompany = (companyIndex: number) => {
     const newHistory = workHistory.filter((_, index) => index !== companyIndex);
-    onChange(newHistory);
+    setWorkHistory(newHistory);
   };
 
   const handleAddExperience = (companyIndex: number) => {
@@ -73,13 +76,13 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
       },
       technicalEnvironment: []
     });
-    onChange(newHistory);
+    setWorkHistory(newHistory);
   };
 
   const handleDeleteExperience = (companyIndex: number, expIndex: number) => {
     const newHistory = [...workHistory];
     newHistory[companyIndex].experiences = newHistory[companyIndex].experiences.filter((_, index) => index !== expIndex);
-    onChange(newHistory);
+    setWorkHistory(newHistory);
   };
 
   return (
@@ -105,7 +108,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                     onChange={(e) => {
                       const newHistory = [...workHistory];
                       newHistory[companyIndex].companyName = e.target.value;
-                      onChange(newHistory);
+                      setWorkHistory(newHistory);
                     }}
                   />
                 ) : (
@@ -131,7 +134,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                       onChange={(e) => {
                         const newHistory = [...workHistory];
                         newHistory[companyIndex].period.start = e.target.value;
-                        onChange(newHistory);
+                        setWorkHistory(newHistory);
                       }}
                       placeholder="YYYY年M月"
                       sx={{ width: '100px' }}
@@ -143,7 +146,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                       onChange={(e) => {
                         const newHistory = [...workHistory];
                         newHistory[companyIndex].period.end = e.target.value;
-                        onChange(newHistory);
+                        setWorkHistory(newHistory);
                       }}
                       placeholder="現在 or YYYY年M月"
                       sx={{ width: '100px' }}
@@ -170,7 +173,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                     onChange={(e) => {
                       const newHistory = [...workHistory];
                       newHistory[companyIndex].capital = Number(e.target.value);
-                      onChange(newHistory);
+                      setWorkHistory(newHistory);
                     }}
                     sx={{ width: '100px' }}
                   />
@@ -189,7 +192,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                     onChange={(e) => {
                       const newHistory = [...workHistory];
                       newHistory[companyIndex].employees = Number(e.target.value);
-                      onChange(newHistory);
+                      setWorkHistory(newHistory);
                     }}
                     sx={{ width: '100px' }}
                   />
@@ -225,7 +228,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                           onChange={(e) => {
                             const newHistory = [...workHistory];
                             newHistory[companyIndex].experiences[expIndex].period.start = e.target.value;
-                            onChange(newHistory);
+                            setWorkHistory(newHistory);
                           }}
                         />
                         <Box sx={{ textAlign: 'center' }}>～</Box>
@@ -237,7 +240,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                           onChange={(e) => {
                             const newHistory = [...workHistory];
                             newHistory[companyIndex].experiences[expIndex].period.end = e.target.value;
-                            onChange(newHistory);
+                            setWorkHistory(newHistory);
                           }}
                         />
                       </Stack>
@@ -264,7 +267,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                               const newHistory = [...workHistory];
                               newHistory[companyIndex].experiences[expIndex].projectContent =
                                 e.target.value.split('\n');
-                              onChange(newHistory);
+                                setWorkHistory(newHistory);
                             }}
                           />
                         ) : (
@@ -287,7 +290,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                               const newHistory = [...workHistory];
                               newHistory[companyIndex].experiences[expIndex].assignments =
                                 e.target.value.split('\n');
-                              onChange(newHistory);
+                              setWorkHistory(newHistory);
                             }}
                           />
                         ) : (
@@ -314,7 +317,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                               onChange={(e) => {
                                 const newHistory = [...workHistory];
                                 newHistory[companyIndex].experiences[expIndex].organization.teamSize = e.target.value;
-                                onChange(newHistory);
+                                setWorkHistory(newHistory);
                               }}
                               sx={{ width: '100px' }}
                             />
@@ -332,7 +335,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                               onChange={(e) => {
                                 const newHistory = [...workHistory];
                                 newHistory[companyIndex].experiences[expIndex].organization.totalSize = e.target.value;
-                                onChange(newHistory);
+                                setWorkHistory(newHistory);
                               }}
                               sx={{ width: '100px' }}
                             />
@@ -355,7 +358,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                               const newHistory = [...workHistory];
                               newHistory[companyIndex].experiences[expIndex].organization.roles =
                                 e.target.value as Role[];
-                              onChange(newHistory);
+                                setWorkHistory(newHistory);
                             }}
                             renderValue={(selected) => (
                               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -387,7 +390,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                               const newHistory = [...workHistory];
                               newHistory[companyIndex].experiences[expIndex].technicalEnvironment =
                                 e.target.value.split('\n');
-                              onChange(newHistory);
+                                setWorkHistory(newHistory);
                             }}
                           />
                         ) : (

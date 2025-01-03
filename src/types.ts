@@ -61,15 +61,21 @@ export interface SelfPromotionType {
 /** 得意分野 */
 export type SpecialtiesType = string
 
+/** 職務要約 */
+export type SummaryType = string
+
+/** 資格 */
+export interface CertificationType {
+  name: string;
+  date: string;
+}
+
 export interface ResumeData {
   name: string;
-  summary: string;
+  summary: SummaryType;
   specialties: SpecialtiesType;
   technicalSkills: TechnicalSkill[];
   workHistory: WorkCompany[];
-  certifications: {
-    name: string;
-    date: string;
-  }[];
+  certifications: CertificationType[];
   selfPromotion: SelfPromotionType[];
 }

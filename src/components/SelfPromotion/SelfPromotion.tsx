@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import {FC, useState} from 'react';
 import {
   Box,
   TextField,
@@ -7,16 +7,11 @@ import {
   styled
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import {SelfPromotionType} from '../../types';
 
 interface SelfPromotionSection {
   title: string;
   content: string;
-}
-
-interface Props {
-  content: SelfPromotionSection[];
-  onChange: (content: SelfPromotionSection[]) => void;
-  isEditMode: boolean;
 }
 
 const TitleText = styled('span')({
@@ -25,27 +20,36 @@ const TitleText = styled('span')({
   borderBottom: '1px solid black',
 });
 
-const SelfPromotion: FC<Props> = ({ content, onChange, isEditMode }) => {
+interface Props {
+  isEditMode: boolean;
+}
+
+const SelfPromotion: FC<Props> = ({ isEditMode }) => {
+  const [selfPromotion, setSelfPromotion] = useState<SelfPromotionType[]>(() => {
+    const savedData = localStorage.getItem('resumeData');
+    return savedData ? JSON.parse(savedData).selfPromotion : [];
+  });
+
   const handleAdd = () => {
-    onChange([...content, { title: '', content: '' }]);
+    setSelfPromotion([...selfPromotion, { title: '', content: '' }]);
   };
 
   const handleDelete = (index: number) => {
-    onChange(content.filter((_, i) => i !== index));
+    setSelfPromotion(selfPromotion.filter((_, i) => i !== index));
   };
 
   const handleChange = (index: number, field: keyof SelfPromotionSection, value: string) => {
-    const newContent = [...content];
+    const newContent = [...selfPromotion];
     newContent[index] = { ...newContent[index], [field]: value };
-    onChange(newContent);
+    setSelfPromotion(newContent);
   };
 
   return (
     <Box sx={{ mb: 4 }}>
       <h2>■自己PR</h2>
       {isEditMode ? (
-        <Box>
-          {content.map((section, index) => (
+        <>
+          {selfPromotion.map((section, index) => (
             <Box key={index} sx={{ mb: 3 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <TextField
@@ -81,16 +85,16 @@ const SelfPromotion: FC<Props> = ({ content, onChange, isEditMode }) => {
           >
             項目を追加
           </Button>
-        </Box>
+        </>
       ) : (
-        <Box>
-          {content.map((section, index) => (
+        <>
+          {selfPromotion.map((section, index) => (
             <Box key={index} sx={{ mb: 3 }}>
               <TitleText>◆{section.title}</TitleText>
               <Box sx={{ whiteSpace: 'pre-wrap' }}>{section.content}</Box>
             </Box>
           ))}
-        </Box>
+        </>
       )}
     </Box>
   );

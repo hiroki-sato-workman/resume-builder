@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import {FC, useState} from 'react';
 import {
   Box,
   List,
@@ -8,20 +8,24 @@ import {
   Button
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import {CertificationType} from '../../types';
 
 interface Props {
-  certifications: { name: string; date: string; }[];
-  onChange: (certifications: { name: string; date: string; }[]) => void;
   isEditMode: boolean;
 }
 
-const Certifications: FC<Props> = ({ certifications, onChange, isEditMode }) => {
+const Certifications: FC<Props> = ({ isEditMode }) => {
+  const [certifications, setCertifications] = useState<CertificationType[]>(() => {
+    const savedData = localStorage.getItem('resumeData');
+    return savedData ? JSON.parse(savedData).certifications : [];
+  });
+
   const handleAdd = () => {
-    onChange([...certifications, { name: '', date: '' }]);
+    setCertifications([...certifications, { name: '', date: '' }]);
   };
 
   const handleDelete = (index: number) => {
-    onChange(certifications.filter((_, i) => i !== index));
+    setCertifications(certifications.filter((_, i) => i !== index));
   };
 
   if (!isEditMode && (!certifications.length || certifications.every(cert => !cert.name && !cert.date))) {
@@ -46,7 +50,7 @@ const Certifications: FC<Props> = ({ certifications, onChange, isEditMode }) => 
                 onChange={(e) => {
                   const newCerts = [...certifications];
                   newCerts[index] = { ...newCerts[index], name: e.target.value };
-                  onChange(newCerts);
+                  setCertifications(newCerts);
                 }}
                 placeholder="資格名"
                 sx={{ mr: 2, flex: 1 }}
@@ -57,7 +61,7 @@ const Certifications: FC<Props> = ({ certifications, onChange, isEditMode }) => 
                 onChange={(e) => {
                   const newCerts = [...certifications];
                   newCerts[index] = { ...newCerts[index], date: e.target.value };
-                  onChange(newCerts);
+                  setCertifications(newCerts);
                 }}
                 placeholder="YYYY年M月"
                 sx={{ width: 120, mr: 1 }}
