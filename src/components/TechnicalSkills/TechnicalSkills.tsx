@@ -1,24 +1,28 @@
-import {FC, useState} from 'react';
+import { FC } from 'react';
 import {
   Box,
 } from '@mui/material';
 import ViewModeTechnicalSkills from './ViewModeTechnicalSkills';
 import {TechnicalSkill} from '../../types';
 import EditModeTechnicalSkills from './EditModeTechnicalSkills';
-import {getStoredResumeData} from '../../services/storage.service';
+import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 
 interface Props {
   isEditMode: boolean;
 }
 
 const TechnicalSkills: FC<Props> = ({ isEditMode }) => {
-  const [technicalSkills, setTechnicalSkills] = useState<TechnicalSkill[]>(() => getStoredResumeData('technicalSkills'));
+  const technicalSkills = getSpecifiedStoredResumeData('technicalSkills');
+
+  const handleChangeTechnicalSkillsData = (technicalSkills: TechnicalSkill[]) => {
+    saveStoredResumeData('technicalSkills', technicalSkills)
+  }
 
   return (
     <Box sx={{ mb: 4 }}>
       <h2>■PCスキル/テクニカルスキル</h2>
       {isEditMode
-        ? <EditModeTechnicalSkills technicalSkills={technicalSkills} onChange={setTechnicalSkills}/>
+        ? <EditModeTechnicalSkills technicalSkills={technicalSkills} onChange={handleChangeTechnicalSkillsData}/>
         : <ViewModeTechnicalSkills technicalSkills={technicalSkills} />}
     </Box>
   );

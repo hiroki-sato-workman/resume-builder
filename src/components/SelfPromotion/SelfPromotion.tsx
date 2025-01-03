@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import { FC } from 'react';
 import {
   Box,
   TextField,
@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {SelfPromotionType} from '../../types';
-import {getStoredResumeData} from '../../services/storage.service';
+import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 
 interface SelfPromotionSection {
   title: string;
@@ -26,20 +26,24 @@ interface Props {
 }
 
 const SelfPromotion: FC<Props> = ({ isEditMode }) => {
-  const [selfPromotion, setSelfPromotion] = useState<SelfPromotionType[]>(() => getStoredResumeData('selfPromotion'));
+  const selfPromotion = getSpecifiedStoredResumeData('selfPromotion');
+
+  const handleChangeSelfPromotionData = (selfPromotion: SelfPromotionType[]) => {
+    saveStoredResumeData('selfPromotion', selfPromotion)
+  }
 
   const handleAdd = () => {
-    setSelfPromotion([...selfPromotion, { title: '', content: '' }]);
+    handleChangeSelfPromotionData([...selfPromotion, { title: '', content: '' }]);
   };
 
   const handleDelete = (index: number) => {
-    setSelfPromotion(selfPromotion.filter((_, i) => i !== index));
+    handleChangeSelfPromotionData(selfPromotion.filter((_, i) => i !== index));
   };
 
   const handleChange = (index: number, field: keyof SelfPromotionSection, value: string) => {
     const newContent = [...selfPromotion];
     newContent[index] = { ...newContent[index], [field]: value };
-    setSelfPromotion(newContent);
+    handleChangeSelfPromotionData(newContent);
   };
 
   return (
@@ -53,7 +57,7 @@ const SelfPromotion: FC<Props> = ({ isEditMode }) => {
                 <TextField
                   fullWidth
                   size="small"
-                  value={section.title}
+                  defaultValue={section.title}
                   onChange={(e) => handleChange(index, 'title', e.target.value)}
                   placeholder="タイトル"
                   sx={{ mr: 1 }}
@@ -70,7 +74,7 @@ const SelfPromotion: FC<Props> = ({ isEditMode }) => {
                 fullWidth
                 multiline
                 minRows={3}
-                value={section.content}
+                defaultValue={section.content}
                 onChange={(e) => handleChange(index, 'content', e.target.value)}
                 placeholder="内容"
               />

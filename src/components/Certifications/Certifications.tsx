@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import { FC } from 'react';
 import {
   Box,
   List,
@@ -9,21 +9,25 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {CertificationType} from '../../types';
-import {getStoredResumeData} from '../../services/storage.service';
+import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 
 interface Props {
   isEditMode: boolean;
 }
 
 const Certifications: FC<Props> = ({ isEditMode }) => {
-  const [certifications, setCertifications] = useState<CertificationType[]>(() => getStoredResumeData('certifications'));
+  const certifications = getSpecifiedStoredResumeData('certifications');
+
+  const handleChangeCertificationData = (certifications: CertificationType[]) => {
+    saveStoredResumeData('certifications', certifications)
+  }
 
   const handleAdd = () => {
-    setCertifications([...certifications, { name: '', date: '' }]);
+    handleChangeCertificationData([...certifications, { name: '', date: '' }]);
   };
 
   const handleDelete = (index: number) => {
-    setCertifications(certifications.filter((_, i) => i !== index));
+    handleChangeCertificationData(certifications.filter((_, i) => i !== index));
   };
 
   if (!isEditMode && (!certifications.length || certifications.every(cert => !cert.name && !cert.date))) {
@@ -44,11 +48,11 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
             <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <TextField
                 size="small"
-                value={cert.name}
+                defaultValue={cert.name}
                 onChange={(e) => {
                   const newCerts = [...certifications];
                   newCerts[index] = { ...newCerts[index], name: e.target.value };
-                  setCertifications(newCerts);
+                  handleChangeCertificationData(newCerts);
                 }}
                 placeholder="資格名"
                 sx={{ mr: 2, flex: 1 }}
@@ -59,7 +63,7 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
                 onChange={(e) => {
                   const newCerts = [...certifications];
                   newCerts[index] = { ...newCerts[index], date: e.target.value };
-                  setCertifications(newCerts);
+                  handleChangeCertificationData(newCerts);
                 }}
                 placeholder="YYYY年M月"
                 sx={{ width: 120, mr: 1 }}

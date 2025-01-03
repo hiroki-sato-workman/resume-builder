@@ -89,7 +89,7 @@ const EditModeTechnicalSkills: FC<Props> = ({technicalSkills, onChange}: Props) 
                       <Select
                         fullWidth
                         size="small"
-                        value={skill.type}
+                        defaultValue={skill.type}
                         onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'type', e.target.value)}
                       >
                         {CATEGORIES[category as keyof typeof CATEGORIES].map(option => (
@@ -100,7 +100,7 @@ const EditModeTechnicalSkills: FC<Props> = ({technicalSkills, onChange}: Props) 
                       <TextField
                         fullWidth
                         size="small"
-                        value={skill.type}
+                        defaultValue={skill.type}
                         onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'type', e.target.value)}
                       />
                     )}
@@ -108,7 +108,7 @@ const EditModeTechnicalSkills: FC<Props> = ({technicalSkills, onChange}: Props) 
                       <TextField
                         fullWidth
                         size="small"
-                        value={skill.otherType || ''}
+                        defaultValue={skill.otherType || ''}
                         onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'otherType', e.target.value)}
                         sx={{ mt: 1 }}
                       />
@@ -118,7 +118,7 @@ const EditModeTechnicalSkills: FC<Props> = ({technicalSkills, onChange}: Props) 
                     <Select
                       fullWidth
                       size="small"
-                      value={skill.years}
+                      defaultValue={skill.years}
                       onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'years', e.target.value)}
                     >
                       {EXPERIENCE_YEARS.map(year => (
@@ -132,14 +132,14 @@ const EditModeTechnicalSkills: FC<Props> = ({technicalSkills, onChange}: Props) 
                         fullWidth
                         multiline
                         minRows={2}
-                        value={skill.level}
+                        defaultValue={skill.level}
                         onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'level', e.target.value)}
                       />
                     ) : (
                       <Select
                         fullWidth
                         size="small"
-                        value={skill.level}
+                        defaultValue={skill.level}
                         onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'level', e.target.value)}
                       >
                         {SKILL_LEVELS.map(level => (

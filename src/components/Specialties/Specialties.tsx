@@ -1,8 +1,8 @@
+import { FC } from 'react';
 import { Box, List, ListItem, TextField } from '@mui/material';
 import { SpecialtiesType } from '../../types';
 import { SxProps } from '@mui/system';
-import {FC, useState} from 'react';
-import {getStoredResumeData} from '../../services/storage.service';
+import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 
 interface Props {
   isEditMode: boolean
@@ -10,7 +10,11 @@ interface Props {
 }
 
 const Specialties: FC<Props> = ({ isEditMode, viewModeStyles}: Props) => {
-  const [specialties, setSpecialties] = useState<SpecialtiesType>(() => getStoredResumeData('specialties'));
+  const specialties = getSpecifiedStoredResumeData('specialties');
+
+  const handleChangeSpecialtiesData = (specialties: SpecialtiesType) => {
+    saveStoredResumeData('specialties', specialties)
+  }
 
   return (
     <Box sx={{ mb: 4 }}>
@@ -20,8 +24,8 @@ const Specialties: FC<Props> = ({ isEditMode, viewModeStyles}: Props) => {
           fullWidth
           multiline
           minRows={3}
-          value={specialties}
-          onChange={(e) => setSpecialties(e.target.value)}
+          defaultValue={specialties}
+          onChange={(e) => handleChangeSpecialtiesData(e.target.value)}
           placeholder="各項目を改行で区切って入力してください"
           sx={viewModeStyles.textField}
         />

@@ -1,7 +1,7 @@
-import {FC, useState} from 'react';
+import { FC } from 'react';
 import { TextField, Box, styled } from '@mui/material';
 import {getViewModeStyles} from '../../styles/viewModeStyles';
-import {getStoredResumeData} from '../../services/storage.service';
+import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 
 
 const NameContainer = styled(Box)({
@@ -16,11 +16,15 @@ type Props = {
 }
 
 const ResumeHeader: FC<Props> = ({ isEditMode }) => {
-  const [name, setName] = useState<string>(() => getStoredResumeData('name'));
+  const name = getSpecifiedStoredResumeData('name');
 
   const today = new Date();
   const dateString = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日現在`;
   const viewModeStyles = getViewModeStyles(isEditMode);
+
+  const handleChangeName = (name: string) => {
+    saveStoredResumeData('name', name)
+  }
 
   return (
     <Box sx={{ mb: 4 }}>
@@ -33,8 +37,8 @@ const ResumeHeader: FC<Props> = ({ isEditMode }) => {
           {isEditMode ? (
             <TextField
               variant="standard"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              defaultValue={name}
+              onChange={(e) => handleChangeName(e.target.value)}
               sx={{ ...viewModeStyles.textField, width: '200px' }}
             />
           ) : (

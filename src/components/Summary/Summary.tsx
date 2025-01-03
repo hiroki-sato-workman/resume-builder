@@ -1,14 +1,18 @@
-import {FC, useState} from 'react';
+import { FC } from 'react';
 import { TextField, Box } from '@mui/material';
 import { SummaryType } from '../../types';
-import {getStoredResumeData} from '../../services/storage.service';
+import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 
 interface Props {
   isEditMode: boolean;
 }
 
 const Summary: FC<Props> = ({ isEditMode }) => {
-  const [summary, setSummary] = useState<SummaryType>(() => getStoredResumeData('summary'));
+  const summary = getSpecifiedStoredResumeData('summary');
+
+  const handleChangeSummaryData = (summary: SummaryType) => {
+    saveStoredResumeData('summary', summary)
+  }
 
   return (
     <Box sx={{ mb: 4 }}>
@@ -18,8 +22,8 @@ const Summary: FC<Props> = ({ isEditMode }) => {
           fullWidth
           multiline
           minRows={3}
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
+          defaultValue={summary}
+          onChange={(e) => handleChangeSummaryData(e.target.value)}
         />
       ) : (
         <div style={{ whiteSpace: 'pre-wrap' }}>{summary}</div>
