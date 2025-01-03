@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import {FC, useState} from 'react';
 import {
   Box,
 } from '@mui/material';
@@ -12,9 +12,10 @@ interface Props {
 }
 
 const TechnicalSkills: FC<Props> = ({ isEditMode }) => {
-  const technicalSkills = getSpecifiedStoredResumeData('technicalSkills');
+  const [technicalSkills, setTechnicalSkills] = useState<TechnicalSkill[]>(() => getSpecifiedStoredResumeData('technicalSkills'));
 
   const handleChangeTechnicalSkillsData = (technicalSkills: TechnicalSkill[]) => {
+    setTechnicalSkills(technicalSkills)
     saveStoredResumeData('technicalSkills', technicalSkills)
   }
 

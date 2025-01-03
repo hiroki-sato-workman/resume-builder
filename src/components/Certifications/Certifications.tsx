@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import {FC, useState} from 'react';
 import {
   Box,
   List,
@@ -16,9 +16,10 @@ interface Props {
 }
 
 const Certifications: FC<Props> = ({ isEditMode }) => {
-  const certifications = getSpecifiedStoredResumeData('certifications');
+  const [certifications, setCertifications] = useState<CertificationType[]>(() => getSpecifiedStoredResumeData('certifications'));
 
   const handleChangeCertificationData = (certifications: CertificationType[]) => {
+    setCertifications(certifications)
     saveStoredResumeData('certifications', certifications)
   }
 
@@ -48,7 +49,7 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
             <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <TextField
                 size="small"
-                defaultValue={cert.name}
+                value={cert.name}
                 onChange={(e) => {
                   const newCerts = [...certifications];
                   newCerts[index] = { ...newCerts[index], name: e.target.value };

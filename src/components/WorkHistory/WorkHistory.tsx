@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
   Box,
   TextField,
@@ -44,13 +44,13 @@ interface Props {
 }
 
 const WorkHistory: FC<Props> = ({ isEditMode }) => {
-  const workHistory = getSpecifiedStoredResumeData('workHistory');
+  const [workHistory, setWorkHistory] = useState<WorkCompany[]>(() => getSpecifiedStoredResumeData('workHistory'));
 
-  const handleChangeWorkHistoryData = (workHistory:  WorkCompany[]) => {
+  const handleChangeWorkHistoryData = (workHistory: WorkCompany[]) => {
+    setWorkHistory(workHistory)
     saveStoredResumeData('workHistory', workHistory)
   }
 
-  // FIXME: 追加時に即座にDOMが更新されない問題を修正
   const handleAddCompany = () => {
     handleChangeWorkHistoryData([...workHistory, {
       companyName: '',
@@ -61,7 +61,6 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
     }]);
   };
 
-  // FIXME: 削除時に即座にDOMが更新されない問題を修正
   const handleDeleteCompany = (companyIndex: number) => {
     const newHistory = workHistory.filter((_, index) => index !== companyIndex);
     handleChangeWorkHistoryData(newHistory);
