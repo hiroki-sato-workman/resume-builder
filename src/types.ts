@@ -14,6 +14,7 @@ export type Role =
 
 export type ExperienceYears = '半年' | '1年' | '2年' | '3年' | '4年' | '5年' | '6年' | '7年' | '8年' | '9年' | '10年以上';
 
+/** テクニカルスキル */
 export interface TechnicalSkill {
   category: string;
   type: string;
@@ -23,6 +24,7 @@ export interface TechnicalSkill {
   remarks?: string;
 }
 
+/** 職歴（プロジェクト） */
 export interface WorkExperience {
   period: {
     start: string;
@@ -38,24 +40,36 @@ export interface WorkExperience {
   technicalEnvironment: string[];
 }
 
+/** 職歴（会社） */
+export interface WorkCompany {
+  companyName: string;
+  period: {
+    start: string;
+    end: string;
+  };
+  capital: number;
+  employees: number;
+  experiences: WorkExperience[];
+}
+
+/** 自己PR */
+export interface SelfPromotionType {
+  title: string;
+  content: string;
+}
+
+/** 得意分野 */
+export type SpecialtiesType = string
+
 export interface ResumeData {
   name: string;
   summary: string;
-  specialties: string;
+  specialties: SpecialtiesType;
   technicalSkills: TechnicalSkill[];
-  workHistory: {
-    companyName: string;
-    period: {
-      start: string;
-      end: string;
-    };
-    capital: number;
-    employees: number;
-    experiences: WorkExperience[];
-  }[];
+  workHistory: WorkCompany[];
   certifications: {
     name: string;
     date: string;
   }[];
-  selfPromotion: string;
+  selfPromotion: SelfPromotionType[];
 }

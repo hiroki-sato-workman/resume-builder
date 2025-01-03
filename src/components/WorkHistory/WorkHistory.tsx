@@ -16,32 +16,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {TableCellProps} from '@mui/material/TableCell/TableCell';
-
-interface WorkExperience {
-  period: {
-    start: string;
-    end: string;
-  };
-  projectContent: string[];
-  assignments: string[];
-  organization: {
-    teamSize: string;
-    totalSize: string;
-    roles: string[];
-  };
-  technicalEnvironment: string[];
-}
-
-interface WorkCompany {
-  companyName: string;
-  period: {
-    start: string;
-    end: string;
-  };
-  capital: number;
-  employees: number;
-  experiences: WorkExperience[];
-}
+import {Role, WorkCompany} from '../../types';
 
 interface Props {
   workHistory: WorkCompany[];
@@ -379,7 +354,7 @@ const WorkHistory: FC<Props> = ({ workHistory, onChange, isEditMode }) => {
                             onChange={(e) => {
                               const newHistory = [...workHistory];
                               newHistory[companyIndex].experiences[expIndex].organization.roles =
-                                e.target.value as string[];
+                                e.target.value as Role[];
                               onChange(newHistory);
                             }}
                             renderValue={(selected) => (

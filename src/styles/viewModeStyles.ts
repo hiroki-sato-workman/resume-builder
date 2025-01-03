@@ -1,4 +1,3 @@
-// src/styles/viewModeStyles.ts
 import { SxProps } from '@mui/system';
 
 export const getViewModeStyles = (isEditMode: boolean): { [key: string]: SxProps } => ({
