@@ -1,6 +1,7 @@
 import {FC, useState} from 'react';
 import { TextField, Box, styled } from '@mui/material';
 import {getViewModeStyles} from '../../styles/viewModeStyles';
+import {getStoredResumeData} from '../../services/storage.service';
 
 
 const NameContainer = styled(Box)({
@@ -15,10 +16,7 @@ type Props = {
 }
 
 const ResumeHeader: FC<Props> = ({ isEditMode }) => {
-  const [name, setName] = useState<string>(() => {
-    const savedData = localStorage.getItem('resumeData');
-    return savedData ? JSON.parse(savedData).name : '';
-  });
+  const [name, setName] = useState<string>(() => getStoredResumeData('name'));
 
   const today = new Date();
   const dateString = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日現在`;

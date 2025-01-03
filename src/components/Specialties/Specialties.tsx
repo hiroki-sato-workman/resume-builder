@@ -2,6 +2,7 @@ import { Box, List, ListItem, TextField } from '@mui/material';
 import { SpecialtiesType } from '../../types';
 import { SxProps } from '@mui/system';
 import {FC, useState} from 'react';
+import {getStoredResumeData} from '../../services/storage.service';
 
 interface Props {
   isEditMode: boolean
@@ -9,10 +10,7 @@ interface Props {
 }
 
 const Specialties: FC<Props> = ({ isEditMode, viewModeStyles}: Props) => {
-  const [specialties, setSpecialties] = useState<SpecialtiesType>(() => {
-    const savedData = localStorage.getItem('resumeData');
-    return savedData ? JSON.parse(savedData).specialties : [];
-  });
+  const [specialties, setSpecialties] = useState<SpecialtiesType>(() => getStoredResumeData('specialties'));
 
   return (
     <Box sx={{ mb: 4 }}>

@@ -9,16 +9,14 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {CertificationType} from '../../types';
+import {getStoredResumeData} from '../../services/storage.service';
 
 interface Props {
   isEditMode: boolean;
 }
 
 const Certifications: FC<Props> = ({ isEditMode }) => {
-  const [certifications, setCertifications] = useState<CertificationType[]>(() => {
-    const savedData = localStorage.getItem('resumeData');
-    return savedData ? JSON.parse(savedData).certifications : [];
-  });
+  const [certifications, setCertifications] = useState<CertificationType[]>(() => getStoredResumeData('certifications'));
 
   const handleAdd = () => {
     setCertifications([...certifications, { name: '', date: '' }]);

@@ -5,16 +5,14 @@ import {
 import ViewModeTechnicalSkills from './ViewModeTechnicalSkills';
 import {TechnicalSkill} from '../../types';
 import EditModeTechnicalSkills from './EditModeTechnicalSkills';
+import {getStoredResumeData} from '../../services/storage.service';
 
 interface Props {
   isEditMode: boolean;
 }
 
 const TechnicalSkills: FC<Props> = ({ isEditMode }) => {
-  const [technicalSkills, setTechnicalSkills] = useState<TechnicalSkill[]>(() => {
-    const savedData = localStorage.getItem('resumeData');
-    return savedData ? JSON.parse(savedData).technicalSkills : [];
-  });
+  const [technicalSkills, setTechnicalSkills] = useState<TechnicalSkill[]>(() => getStoredResumeData('technicalSkills'));
 
   return (
     <Box sx={{ mb: 4 }}>

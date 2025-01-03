@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {SelfPromotionType} from '../../types';
+import {getStoredResumeData} from '../../services/storage.service';
 
 interface SelfPromotionSection {
   title: string;
@@ -25,10 +26,7 @@ interface Props {
 }
 
 const SelfPromotion: FC<Props> = ({ isEditMode }) => {
-  const [selfPromotion, setSelfPromotion] = useState<SelfPromotionType[]>(() => {
-    const savedData = localStorage.getItem('resumeData');
-    return savedData ? JSON.parse(savedData).selfPromotion : [];
-  });
+  const [selfPromotion, setSelfPromotion] = useState<SelfPromotionType[]>(() => getStoredResumeData('selfPromotion'));
 
   const handleAdd = () => {
     setSelfPromotion([...selfPromotion, { title: '', content: '' }]);

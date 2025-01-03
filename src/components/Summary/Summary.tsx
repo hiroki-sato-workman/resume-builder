@@ -1,16 +1,14 @@
 import {FC, useState} from 'react';
 import { TextField, Box } from '@mui/material';
 import { SummaryType } from '../../types';
+import {getStoredResumeData} from '../../services/storage.service';
 
 interface Props {
   isEditMode: boolean;
 }
 
 const Summary: FC<Props> = ({ isEditMode }) => {
-  const [summary, setSummary] = useState<SummaryType>(() => {
-    const savedData = localStorage.getItem('resumeData');
-    return savedData ? JSON.parse(savedData).summary : '';
-  });
+  const [summary, setSummary] = useState<SummaryType>(() => getStoredResumeData('summary'));
 
   return (
     <Box sx={{ mb: 4 }}>

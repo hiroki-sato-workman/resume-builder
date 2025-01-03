@@ -17,6 +17,7 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {TableCellProps} from '@mui/material/TableCell/TableCell';
 import {Role, WorkCompany} from '../../types';
+import {getStoredResumeData} from '../../services/storage.service';
 
 const ROLES = [
   'メンバー',
@@ -43,10 +44,7 @@ interface Props {
 }
 
 const WorkHistory: FC<Props> = ({ isEditMode }) => {
-  const [workHistory, setWorkHistory] = useState<WorkCompany[]>(() => {
-    const savedData = localStorage.getItem('resumeData');
-    return savedData ? JSON.parse(savedData).workHistory : [];
-  });
+  const [workHistory, setWorkHistory] = useState<WorkCompany[]>(() => getStoredResumeData('workHistory'));
 
   const handleAddCompany = () => {
     setWorkHistory([...workHistory, {
