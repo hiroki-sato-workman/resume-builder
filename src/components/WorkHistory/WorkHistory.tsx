@@ -19,7 +19,7 @@ import {TableCellProps} from '@mui/material/TableCell/TableCell';
 import {Role, WorkCompany} from '../../types';
 import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 
-const ROLES = [
+const ROLES: Role[] = [
   'メンバー',
   'サブリーダー',
   'チームリーダー',
