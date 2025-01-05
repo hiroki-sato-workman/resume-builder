@@ -51,14 +51,14 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
               {/* 取得年月 */}
               <TextField
                 size="small"
+                type="month"
                 value={cert.date}
                 onChange={(e) => {
                   const newCerts = [...certifications];
                   newCerts[index] = { ...newCerts[index], date: e.target.value };
                   handleChangeCertificationData(newCerts);
                 }}
-                placeholder="YYYY年M月"
-                sx={{ width: 120, mr: 1 }}
+                sx={{ width: 150, mr: 1 }}
               />
               {/* 資格名称 */}
               <TextField

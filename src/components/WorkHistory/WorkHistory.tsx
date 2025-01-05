@@ -15,17 +15,10 @@ import {
   Chip,
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import {TableCellProps} from '@mui/material/TableCell/TableCell';
 import {Role, WorkCompany} from '../../types';
 import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
-
-const ROLES: Role[] = [
-  'メンバー',
-  'サブリーダー',
-  'チームリーダー',
-  'プロジェクトリーダー',
-  'プロジェクトマネージャー'
-];
+import FromToDatePicker from './FromToDatePicker';
+import {INITIAL_WORK_COMPANY, INITIAL_WORK_HISTORY, ROLES} from './WorkHistory.constant';
 
 interface Props {
   isEditMode: boolean;
@@ -40,11 +33,7 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
   }
 
   const handleAddCompany = () => {
-    handleChangeWorkHistoryData([...workHistory, {
-      companyName: '',
-      period: { start: '', end: '現在' },
-      experiences: []
-    }]);
+    handleChangeWorkHistoryData([...workHistory, INITIAL_WORK_COMPANY]);
   };
 
   const handleDeleteCompany = (companyIndex: number) => {
@@ -54,19 +43,7 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
 
   const handleAddExperience = (companyIndex: number) => {
     const newHistory = [...workHistory];
-    newHistory[companyIndex].experiences.push({
-      period: { start: '', end: '' },
-      projectTitle: '',
-      projectDescription: '',
-      assignments: [],
-      achievements: '',
-      organization: {
-        teamSize: '',
-        totalSize: '',
-        roles: []
-      },
-      technicalEnvironment: []
-    });
+    newHistory[companyIndex].experiences.push(INITIAL_WORK_HISTORY);
     handleChangeWorkHistoryData(newHistory);
   };
 
@@ -115,43 +92,24 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                   </IconButton>
                 )}
               </Box>
-              <Box>
-                (勤務期間：
-                {isEditMode ? (
-                  <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                    <TextField
-                      variant="standard"
-                      defaultValue={company.period.start}
-                      onChange={(e) => {
-                        const newHistory = [...workHistory];
-                        newHistory[companyIndex].period.start = e.target.value;
-                        handleChangeWorkHistoryData(newHistory);
-                      }}
-                      placeholder="YYYY年M月"
-                      sx={{ width: '100px' }}
-                    />
-                    <Box sx={{ mx: 1, textAlign: 'center' }}>～</Box>
-                    <TextField
-                      variant="standard"
-                      defaultValue={company.period.end}
-                      onChange={(e) => {
-                        const newHistory = [...workHistory];
-                        newHistory[companyIndex].period.end = e.target.value;
-                        handleChangeWorkHistoryData(newHistory);
-                      }}
-                      placeholder="現在 or YYYY年M月"
-                      sx={{ width: '100px' }}
-                    />
-                  </Box>
-                ) : (
-                  <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                    <span>{company.period.start}</span>
-                    <span style={{ margin: '0 8px' }}>～</span>
-                    <span>{company.period.end}</span>
-                  </Box>
-                )}
-                )
-              </Box>
+              <Stack direction="row" alignItems="center">
+                <Box>（勤務期間：</Box>
+                <FromToDatePicker
+                  isEditMode={isEditMode}
+                  period={company.period}
+                  onChangeStart={(date) => {
+                    const newHistory = [...workHistory];
+                    newHistory[companyIndex].period.start = date;
+                    handleChangeWorkHistoryData(newHistory);
+                  }}
+                  onChangeEnd={(date) => {
+                    const newHistory = [...workHistory];
+                    newHistory[companyIndex].period.end = date;
+                    handleChangeWorkHistoryData(newHistory);
+                  }}
+                />
+                <Box>）</Box>
+              </Stack>
             </Box>
           </Stack>
 
@@ -174,39 +132,21 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                   }}
                 >
                   <TableCell>
-                    {isEditMode ? (
-                      <Stack spacing={1} alignItems="center">
-                        <TextField
-                          fullWidth
-                          size="small"
-                          placeholder="YYYY年M月"
-                          defaultValue={exp.period.start}
-                          onChange={(e) => {
-                            const newHistory = [...workHistory];
-                            newHistory[companyIndex].experiences[expIndex].period.start = e.target.value;
-                            handleChangeWorkHistoryData(newHistory);
-                          }}
-                        />
-                        <Box sx={{ textAlign: 'center' }}>～</Box>
-                        <TextField
-                          fullWidth
-                          size="small"
-                          placeholder="YYYY年M月"
-                          defaultValue={exp.period.end}
-                          onChange={(e) => {
-                            const newHistory = [...workHistory];
-                            newHistory[companyIndex].experiences[expIndex].period.end = e.target.value;
-                            handleChangeWorkHistoryData(newHistory);
-                          }}
-                        />
-                      </Stack>
-                    ) : (
-                      <Stack alignItems="center">
-                        <Box>{exp.period.start}</Box>
-                        <Box>～</Box>
-                        <Box>{exp.period.end}</Box>
-                      </Stack>
-                    )}
+                    <FromToDatePicker
+                      isEditMode={isEditMode}
+                      period={exp.period}
+                      direction="column"
+                      onChangeStart={(date) => {
+                        const newHistory = [...workHistory];
+                        newHistory[companyIndex].experiences[expIndex].period.start = date;
+                        handleChangeWorkHistoryData(newHistory);
+                      }}
+                      onChangeEnd={(date) => {
+                        const newHistory = [...workHistory];
+                        newHistory[companyIndex].experiences[expIndex].period.end = date;
+                        handleChangeWorkHistoryData(newHistory);
+                      }}
+                    />
                   </TableCell>
 
                   <TableCell>
