@@ -19,6 +19,7 @@ import {Role, WorkCompany} from '../../types';
 import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 import FromToDatePicker from './FromToDatePicker';
 import {INITIAL_WORK_COMPANY, INITIAL_WORK_HISTORY, ROLES} from './WorkHistory.constant';
+import {StyledStack} from '../../shared/components';
 
 interface Props {
   isEditMode: boolean;
@@ -93,7 +94,7 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                 )}
               </Box>
               <Stack direction="row" alignItems="center">
-                <Box>（勤務期間：</Box>
+                <Box>勤務期間：</Box>
                 <FromToDatePicker
                   isEditMode={isEditMode}
                   period={company.period}
@@ -108,7 +109,6 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                     handleChangeWorkHistoryData(newHistory);
                   }}
                 />
-                <Box>）</Box>
               </Stack>
             </Box>
           </Stack>
@@ -181,7 +181,11 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                               handleChangeWorkHistoryData(newHistory);
                             }}
                           />
-                        ) : (exp.projectDescription)}
+                        ) : (
+                          <Box style={{ whiteSpace: 'pre-wrap' }}>
+                            {exp.projectDescription}
+                          </Box>
+                        )}
                       </Stack>
 
                       <Stack>
@@ -222,7 +226,11 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                               handleChangeWorkHistoryData(newHistory);
                             }}
                           />
-                        ) : (exp.achievements)}
+                        ) : (
+                          <Box style={{ whiteSpace: 'pre-wrap' }}>
+                            {exp.achievements}
+                          </Box>
+                        )}
                       </Stack>
                     </Stack>
                   </TableCell>
@@ -231,7 +239,7 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                     <Stack spacing={2}>
                       <Stack>
                         <strong>【組織】</strong>
-                        <Stack direction="row" spacing={2}>
+                        <StyledStack direction="row">
                           <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
                             <Box width={60}>チーム：</Box>
                             {isEditMode ? (
@@ -251,6 +259,7 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                             )}
                             <Box ml={0.5}>名</Box>
                           </Stack>
+                          <Box>/</Box>
                           <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
                             <Box>全体：</Box>
                             {isEditMode ? (
@@ -270,7 +279,7 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                             )}
                             <Box ml={0.5}>名</Box>
                           </Stack>
-                        </Stack>
+                        </StyledStack>
                       </Stack>
 
                       <Box>
