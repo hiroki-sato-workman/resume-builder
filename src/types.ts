@@ -1,10 +1,12 @@
-export type SkillLevel = 
+/** スキルレベル */
+export type SkillLevel =
   | '通常使用に問題なしで、指導も可能'
   | '通常使用に問題なし'
   | '調べながらであれば作業可能'
   | '自己研鑽'
   | '大学で使用';
 
+/** 役割	*/
 export type Role = 
   | 'メンバー'
   | 'サブリーダー'
@@ -12,43 +14,59 @@ export type Role =
   | 'プロジェクトリーダー'
   | 'プロジェクトマネージャー';
 
+/** 経験年数	*/
 export type ExperienceYears = '半年' | '1年' | '2年' | '3年' | '4年' | '5年' | '6年' | '7年' | '8年' | '9年' | '10年以上';
 
 /** テクニカルスキル */
 export interface TechnicalSkill {
+  /** カテゴリ */
   category: string;
+  /** 種別 */
   type: string;
-  years: ExperienceYears;
-  level: SkillLevel | '';
+  /** その他種別 */
   otherType?: string;
-  remarks?: string;
+  /** 経験年数 */
+  years: ExperienceYears;
+  /** スキルレベル */
+  level: SkillLevel | '';
+}
+
+/** 期間 */
+export interface PeriodType {
+  /** 期間（開始） */
+  start: string;
+  /** 期間（終了） */
+  end: string;
 }
 
 /** 職歴（プロジェクト） */
 export interface WorkExperience {
-  period: {
-    start: string;
-    end: string;
-  };
+  /** プロジェクト期間 */
+  period: PeriodType
+  /** プロジェクト内容 */
   projectContent: string[];
+  /** 担当業務 */
   assignments: string[];
+  /** 組織情報 */ 
   organization: {
+    /** チーム人数 */
     teamSize: string;
+    /** 全体人数 */
     totalSize: string;
+    /** 役割 */
     roles: Role[];
   };
+  /** 言語・環境 */
   technicalEnvironment: string[];
 }
 
 /** 職歴（会社） */
 export interface WorkCompany {
+  /** 会社名 */
   companyName: string;
-  period: {
-    start: string;
-    end: string;
-  };
-  capital: number;
-  employees: number;
+  /** 勤務期間 */
+  period: PeriodType
+  /** 業務内容 */
   experiences: WorkExperience[];
 }
 
@@ -66,16 +84,26 @@ export type SummaryType = string
 
 /** 資格 */
 export interface CertificationType {
+  /** 資格名称 */
   name: string;
+  /** 取得年月 */
   date: string;
 }
 
+/** 職務経歴 */
 export interface ResumeData {
+  /** 名前 */
   name: string;
+  /** 職務要約 */
   summary: SummaryType;
+  /** 得意分野 */
   specialties: SpecialtiesType;
+  /** テクニカルスキル */
   technicalSkills: TechnicalSkill[];
+  /** 職務経歴 */
   workHistory: WorkCompany[];
+  /** 資格 */
   certifications: CertificationType[];
+  /** 自己PR */
   selfPromotion: SelfPromotionType[];
 }
