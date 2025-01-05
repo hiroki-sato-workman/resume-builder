@@ -47,17 +47,7 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
         <Box>
           {certifications.map((cert, index) => (
             <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-              <TextField
-                size="small"
-                value={cert.name}
-                onChange={(e) => {
-                  const newCerts = [...certifications];
-                  newCerts[index] = { ...newCerts[index], name: e.target.value };
-                  handleChangeCertificationData(newCerts);
-                }}
-                placeholder="資格名"
-                sx={{ mr: 2, flex: 1 }}
-              />
+              {/* 取得年月 */}
               <TextField
                 size="small"
                 value={cert.date}
@@ -69,6 +59,19 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
                 placeholder="YYYY年M月"
                 sx={{ width: 120, mr: 1 }}
               />
+              {/* 資格名称 */}
+              <TextField
+                size="small"
+                value={cert.name}
+                onChange={(e) => {
+                  const newCerts = [...certifications];
+                  newCerts[index] = { ...newCerts[index], name: e.target.value };
+                  handleChangeCertificationData(newCerts);
+                }}
+                placeholder="資格名"
+                sx={{ mr: 2, flex: 1 }}
+              />
+              {/* 削除ボタン */}
               <IconButton
                 size="small"
                 onClick={() => handleDelete(index)}
@@ -93,7 +96,7 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
             .filter(cert => cert.name || cert.date)
             .map((cert, index) => (
               <ListItem key={index} sx={{ display: 'list-item', padding: '4px 0' }}>
-                {cert.name}（{cert.date}）
+                {cert.date}：{cert.name}
               </ListItem>
             ))}
         </List>

@@ -55,8 +55,6 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
     handleChangeWorkHistoryData([...workHistory, {
       companyName: '',
       period: { start: '', end: '現在' },
-      capital: 0,
-      employees: 0,
       experiences: []
     }]);
   };
@@ -165,46 +163,6 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                 )
               </Box>
             </Box>
-
-            <Box sx={{ display: 'flex', gap: 4 }}>
-              <Box>
-                ◆資本金{isEditMode ? (
-                  <TextField
-                    variant="standard"
-                    type="number"
-                    defaultValue={company.capital}
-                    onChange={(e) => {
-                      const newHistory = [...workHistory];
-                      newHistory[companyIndex].capital = Number(e.target.value);
-                      handleChangeWorkHistoryData(newHistory);
-                    }}
-                    sx={{ width: '100px' }}
-                  />
-                ) : (
-                  company.capital
-                )}
-                千万円
-              </Box>
-              <Box>
-                ◆従業員数：
-                {isEditMode ? (
-                  <TextField
-                    variant="standard"
-                    type="number"
-                    defaultValue={company.employees}
-                    onChange={(e) => {
-                      const newHistory = [...workHistory];
-                      newHistory[companyIndex].employees = Number(e.target.value);
-                      handleChangeWorkHistoryData(newHistory);
-                    }}
-                    sx={{ width: '100px' }}
-                  />
-                ) : (
-                  company.employees
-                )}
-                名
-              </Box>
-            </Box>
           </Stack>
 
           {/* 経験テーブル */}
@@ -311,41 +269,45 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                     <Stack spacing={2}>
                       <Stack>
                         <strong>【組織】</strong>
-                        <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
-                          <Box width={60}>チーム：</Box>
-                          {isEditMode ? (
-                            <TextField
-                              size="small"
-                              defaultValue={exp.organization.teamSize}
-                              onChange={(e) => {
-                                const newHistory = [...workHistory];
-                                newHistory[companyIndex].experiences[expIndex].organization.teamSize = e.target.value;
-                                handleChangeWorkHistoryData(newHistory);
-                              }}
-                              sx={{ width: '100px' }}
-                            />
-                          ) : (
-                            exp.organization.teamSize
-                          )}
-                          <Box ml={1}>名</Box>
-                        </Stack>
-                        <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
-                          <Box width={60}>全体：</Box>
-                          {isEditMode ? (
-                            <TextField
-                              size="small"
-                              defaultValue={exp.organization.totalSize}
-                              onChange={(e) => {
-                                const newHistory = [...workHistory];
-                                newHistory[companyIndex].experiences[expIndex].organization.totalSize = e.target.value;
-                                handleChangeWorkHistoryData(newHistory);
-                              }}
-                              sx={{ width: '100px' }}
-                            />
-                          ) : (
-                            exp.organization.totalSize
-                          )}
-                          <Box ml={1}>名</Box>
+                        <Stack direction="row" spacing={2}>
+                          <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
+                            <Box width={60}>チーム：</Box>
+                            {isEditMode ? (
+                              <TextField
+                                size="small"
+                                type="number"
+                                defaultValue={exp.organization.teamSize}
+                                onChange={(e) => {
+                                  const newHistory = [...workHistory];
+                                  newHistory[companyIndex].experiences[expIndex].organization.teamSize = e.target.value;
+                                  handleChangeWorkHistoryData(newHistory);
+                                }}
+                                sx={{ width: '80px' }}
+                              />
+                            ) : (
+                              exp.organization.teamSize
+                            )}
+                            <Box ml={0.5}>名</Box>
+                          </Stack>
+                          <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
+                            <Box>全体：</Box>
+                            {isEditMode ? (
+                              <TextField
+                                size="small"
+                                type="number"
+                                defaultValue={exp.organization.totalSize}
+                                onChange={(e) => {
+                                  const newHistory = [...workHistory];
+                                  newHistory[companyIndex].experiences[expIndex].organization.totalSize = e.target.value;
+                                  handleChangeWorkHistoryData(newHistory);
+                                }}
+                                sx={{ width: '80px' }}
+                              />
+                            ) : (
+                              exp.organization.totalSize
+                            )}
+                            <Box ml={0.5}>名</Box>
+                          </Stack>
                         </Stack>
                       </Stack>
 
