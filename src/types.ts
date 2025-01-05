@@ -43,10 +43,14 @@ export interface PeriodType {
 export interface WorkExperience {
   /** プロジェクト期間 */
   period: PeriodType
-  /** プロジェクト内容 */
-  projectContent: string[];
-  /** 担当業務 */
+  /** プロジェクト名 */
+  projectTitle: string;
+  /** プロジェクト概要 */
+  projectDescription: string;
+  /** 担当フェーズ */
   assignments: string[];
+  /** 実績・取り組み */
+  achievements: string
   /** 組織情報 */ 
   organization: {
     /** チーム人数 */

@@ -22,5 +22,24 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'lightgray',
+          '& .MuiTableCell-head': {
+            fontWeight: 700,
+            textAlign: 'center',
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          border: '1px solid black',
+          verticalAlign: 'top',
+        },
+      },
+    },
   },
 });

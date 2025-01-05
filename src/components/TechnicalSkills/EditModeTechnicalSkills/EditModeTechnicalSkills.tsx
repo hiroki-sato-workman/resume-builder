@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   IconButton,
   MenuItem,
@@ -40,129 +41,137 @@ const EditModeTechnicalSkills: FC<Props> = ({technicalSkills, onChange}: Props) 
   };
 
   const handleDeleteSkill = (index: number) => {
-    const skillToDelete = technicalSkills[index];
-    const remainingSkillsInCategory = technicalSkills.filter(
-      (s, i) => i !== index && s.category === skillToDelete.category
-    );
-
-    if (remainingSkillsInCategory.length === 0) {
-      return;
-    }
-
     const updatedSkills = technicalSkills.filter((_, i) => i !== index);
     onChange(updatedSkills);
   };
 
+  const AddSkillButton = ({ category }: { category: string }) => {
+    return (
+      <IconButton
+        size="small"
+        onClick={() => handleAddSkill(category)}
+        color="info"
+      >
+        <AddIcon/>
+      </IconButton>
+    )
+  }
+
   return (
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
-          <TableCell>カテゴリ</TableCell>
-          <TableCell>種別</TableCell>
-          <TableCell>経験年数</TableCell>
-          <TableCell>スキルレベル・備考</TableCell>
-          <TableCell>操作</TableCell>
+          <TableCell width={250}>カテゴリ</TableCell>
+          <TableCell width={200}>種別</TableCell>
+          <TableCell width={150}>経験年数</TableCell>
+          <TableCell width="auto">スキルレベル・備考</TableCell>
+          <TableCell width={110}>操作</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {Object.keys(CATEGORIES).map(category => (
-          <Fragment key={category}>
-            <TableRow>
-              <TableCell>{category}</TableCell>
-              <TableCell colSpan={4}>
-                <Button
-                  startIcon={<AddIcon />}
-                  onClick={() => handleAddSkill(category)}
-                  size="small"
-                >
-                  {category}を追加
-                </Button>
-              </TableCell>
-            </TableRow>
-            {technicalSkills
-              .filter(skill => skill.category === category)
-              .map((skill, index) => (
-                <TableRow key={`${category}-${index}`}>
-                  <TableCell />
-                  <TableCell>
-                    {CATEGORIES[category as keyof typeof CATEGORIES].length > 0 ? (
+        {Object.keys(CATEGORIES).map(category => {
+            const categorySkills = technicalSkills.filter(skill => skill.category === category);
+            const filteredCategorySkills = technicalSkills.filter(skill => skill.category === category)
+            return (
+              <Fragment key={category}>
+                <TableRow>
+                  <TableCell rowSpan={categorySkills.length + 1}>
+                    {category}
+                  </TableCell>
+                  {/* NOTE: スキル未設定の場合は空のセルで埋める */}
+                  {filteredCategorySkills.length === 0 && (
+                    <>
+                      <TableCell/>
+                      <TableCell/>
+                      <TableCell/>
+                      <TableCell>
+                        <AddSkillButton category={category} />
+                      </TableCell>
+                    </>
+                  )}
+                </TableRow>
+                {filteredCategorySkills.map((skill, index) => (
+                  <TableRow key={`${category}-${index}`}>
+                    <TableCell>
+                      {CATEGORIES[category as keyof typeof CATEGORIES].length > 0 ? (
+                        <Select
+                          fullWidth
+                          size="small"
+                          defaultValue={skill.type}
+                          onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'type', e.target.value)}
+                        >
+                          {CATEGORIES[category as keyof typeof CATEGORIES].map(option => (
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                          ))}
+                        </Select>
+                      ) : (
+                        <TextField
+                          fullWidth
+                          size="small"
+                          defaultValue={skill.type}
+                          onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'type', e.target.value)}
+                        />
+                      )}
+                      {category === 'DB' && skill.type === 'その他' && (
+                        <TextField
+                          fullWidth
+                          size="small"
+                          defaultValue={skill.otherType || ''}
+                          onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'otherType', e.target.value)}
+                          sx={{mt: 1}}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell>
                       <Select
                         fullWidth
                         size="small"
-                        defaultValue={skill.type}
-                        onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'type', e.target.value)}
+                        defaultValue={skill.years}
+                        onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'years', e.target.value)}
                       >
-                        {CATEGORIES[category as keyof typeof CATEGORIES].map(option => (
-                          <MenuItem key={option} value={option}>{option}</MenuItem>
+                        {EXPERIENCE_YEARS.map(year => (
+                          <MenuItem key={year} value={year}>{year}</MenuItem>
                         ))}
                       </Select>
-                    ) : (
-                      <TextField
-                        fullWidth
-                        size="small"
-                        defaultValue={skill.type}
-                        onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'type', e.target.value)}
-                      />
-                    )}
-                    {category === 'DB' && skill.type === 'その他' && (
-                      <TextField
-                        fullWidth
-                        size="small"
-                        defaultValue={skill.otherType || ''}
-                        onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'otherType', e.target.value)}
-                        sx={{ mt: 1 }}
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Select
-                      fullWidth
-                      size="small"
-                      defaultValue={skill.years}
-                      onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'years', e.target.value)}
-                    >
-                      {EXPERIENCE_YEARS.map(year => (
-                        <MenuItem key={year} value={year}>{year}</MenuItem>
-                      ))}
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    {category === '担当業務' ? (
-                      <TextField
-                        fullWidth
-                        multiline
-                        minRows={2}
-                        defaultValue={skill.level}
-                        onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'level', e.target.value)}
-                      />
-                    ) : (
-                      <Select
-                        fullWidth
-                        size="small"
-                        defaultValue={skill.level}
-                        onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'level', e.target.value)}
-                      >
-                        {SKILL_LEVELS.map(level => (
-                          <MenuItem key={level} value={level}>{level}</MenuItem>
-                        ))}
-                      </Select>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {technicalSkills.filter(s => s.category === category).length > 1 && (
+                    </TableCell>
+                    <TableCell>
+                      {category === '担当業務' ? (
+                        <TextField
+                          fullWidth
+                          multiline
+                          minRows={2}
+                          defaultValue={skill.level}
+                          onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'level', e.target.value)}
+                        />
+                      ) : (
+                        <Select
+                          fullWidth
+                          size="small"
+                          defaultValue={skill.level}
+                          onChange={(e) => handleUpdateSkill(technicalSkills.indexOf(skill), 'level', e.target.value)}
+                        >
+                          {SKILL_LEVELS.map(level => (
+                            <MenuItem key={level} value={level}>{level}</MenuItem>
+                          ))}
+                        </Select>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <AddSkillButton category={category} />
                       <IconButton
                         size="small"
                         onClick={() => handleDeleteSkill(technicalSkills.indexOf(skill))}
                         color="error"
                       >
-                        <DeleteIcon />
+                        <DeleteIcon/>
                       </IconButton>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </Fragment>
-        ))}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </Fragment>
+            )
+          }
+        )}
       </TableBody>
     </Table>
   )

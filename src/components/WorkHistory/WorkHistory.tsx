@@ -27,18 +27,6 @@ const ROLES: Role[] = [
   'プロジェクトマネージャー'
 ];
 
-const StyledTableCell = (props: TableCellProps) => (
-  <TableCell
-    sx={{
-      borderRight: '1px solid rgba(224, 224, 224, 1)',
-      borderBottom: '1px solid rgba(224, 224, 224, 1)',
-      verticalAlign: 'top',
-      p: 2,
-    }}
-    {...props}
-  />
-);
-
 interface Props {
   isEditMode: boolean;
 }
@@ -68,8 +56,10 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
     const newHistory = [...workHistory];
     newHistory[companyIndex].experiences.push({
       period: { start: '', end: '' },
-      projectContent: [],
+      projectTitle: '',
+      projectDescription: '',
       assignments: [],
+      achievements: '',
       organization: {
         teamSize: '',
         totalSize: '',
@@ -166,19 +156,24 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
           </Stack>
 
           {/* 経験テーブル */}
-          <Table size="small" sx={{ border: '1px solid rgba(224, 224, 224, 1)' }}>
+          <Table size="small">
             <TableHead>
               <TableRow>
-                <StyledTableCell width={isEditMode ? 160 : 120}>期間</StyledTableCell>
-                <StyledTableCell width={isEditMode ? 450 : 360}>業務内容</StyledTableCell>
-                <StyledTableCell width={isEditMode ? 400 : 250}>組織/役割</StyledTableCell>
-                {isEditMode && <StyledTableCell>操作</StyledTableCell>}
+                <TableCell width={isEditMode ? 160 : 120}>期間</TableCell>
+                <TableCell width={isEditMode ? 450 : 360}>業務内容</TableCell>
+                <TableCell width={isEditMode ? 400 : 250}>組織/役割</TableCell>
+                {isEditMode && <TableCell>操作</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
               {company.experiences.map((exp, expIndex) => (
-                <TableRow key={expIndex}>
-                  <StyledTableCell>
+                <TableRow
+                  key={expIndex}
+                  sx={{
+                    border: '1px solid rgba(224, 224, 224, 1)',
+                  }}
+                >
+                  <TableCell>
                     {isEditMode ? (
                       <Stack spacing={1} alignItems="center">
                         <TextField
@@ -212,35 +207,45 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                         <Box>{exp.period.end}</Box>
                       </Stack>
                     )}
-                  </StyledTableCell>
+                  </TableCell>
 
-                  <StyledTableCell>
+                  <TableCell>
                     <Stack spacing={2}>
-                      <Box>
-                        <strong>【プロジェクト内容】</strong>
+                      <Stack>
+                        <strong>【プロジェクト名】</strong>
+                        {isEditMode ? (
+                          <TextField
+                            size="small"
+                            fullWidth
+                            defaultValue={exp.projectTitle}
+                            onChange={(e) => {
+                              const newHistory = [...workHistory];
+                              newHistory[companyIndex].experiences[expIndex].projectTitle = e.target.value;
+                              handleChangeWorkHistoryData(newHistory);
+                            }}
+                          />
+                        ) : (exp.projectTitle)}
+                      </Stack>
+
+                      <Stack>
+                        <strong>【概要】</strong>
                         {isEditMode ? (
                           <TextField
                             fullWidth
                             multiline
                             minRows={3}
-                            defaultValue={exp.projectContent.join('\n')}
+                            defaultValue={exp.projectDescription}
                             onChange={(e) => {
                               const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].projectContent =
-                                e.target.value.split('\n');
-                                handleChangeWorkHistoryData(newHistory);
+                              newHistory[companyIndex].experiences[expIndex].projectDescription = e.target.value;
+                              handleChangeWorkHistoryData(newHistory);
                             }}
                           />
-                        ) : (
-                          <ul>
-                            {exp.projectContent.map((content, i) => (
-                              <li key={i}>{content}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </Box>
-                      <Box>
-                        <strong>【担当業務】</strong>
+                        ) : (exp.projectDescription)}
+                      </Stack>
+
+                      <Stack>
+                        <strong>【担当フェーズ】</strong>
                         {isEditMode ? (
                           <TextField
                             fullWidth
@@ -261,11 +266,28 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                             ))}
                           </ul>
                         )}
-                      </Box>
-                    </Stack>
-                  </StyledTableCell>
+                      </Stack>
 
-                  <StyledTableCell>
+                      <Stack>
+                        <strong>【実績・取り組み】</strong>
+                        {isEditMode ? (
+                          <TextField
+                            fullWidth
+                            multiline
+                            minRows={3}
+                            defaultValue={exp.achievements}
+                            onChange={(e) => {
+                              const newHistory = [...workHistory];
+                              newHistory[companyIndex].experiences[expIndex].achievements = e.target.value;
+                              handleChangeWorkHistoryData(newHistory);
+                            }}
+                          />
+                        ) : (exp.achievements)}
+                      </Stack>
+                    </Stack>
+                  </TableCell>
+
+                  <TableCell>
                     <Stack spacing={2}>
                       <Stack>
                         <strong>【組織】</strong>
@@ -368,10 +390,10 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                         )}
                       </Box>
                     </Stack>
-                  </StyledTableCell>
+                  </TableCell>
 
                   {isEditMode && (
-                    <StyledTableCell>
+                    <TableCell>
                       <IconButton
                         size="small"
                         onClick={() => handleDeleteExperience(companyIndex, expIndex)}
@@ -379,7 +401,7 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </StyledTableCell>
+                    </TableCell>
                   )}
                 </TableRow>
               ))}
