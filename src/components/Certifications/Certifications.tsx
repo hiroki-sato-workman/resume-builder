@@ -5,7 +5,8 @@ import {
   ListItem,
   TextField,
   IconButton,
-  Button
+  Button,
+  Stack,
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {CertificationType} from '../../types';
@@ -96,7 +97,10 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
             .filter(cert => cert.name || cert.date)
             .map((cert, index) => (
               <ListItem key={index} sx={{ display: 'list-item', padding: '4px 0' }}>
-                {cert.date}：{cert.name}
+                <Stack direction="row" spacing={4}>
+                  <Box>{cert.date}</Box>
+                  <Box>{cert.name}</Box>
+                </Stack>
               </ListItem>
             ))}
         </List>
