@@ -3,6 +3,7 @@ import {Box, Button, TextField} from '@mui/material';
 import {PeriodType} from '../../../../types';
 import {CURRENT} from '../../WorkHistory.constant';
 import {StyledStack} from '../../../../shared/components';
+import {calculateDuration} from '../../../../services/calculateDuration.service';
 
 interface Props {
   period: PeriodType
@@ -11,7 +12,12 @@ interface Props {
   direction?: 'row' | 'column'
 }
 
-const EditModeFromToDatePicker: FC<Props> = ({  period, onChangeStart, onChangeEnd, direction = 'row' }) => {
+const EditModeFromToDatePicker: FC<Props> = ({
+  period,
+  onChangeStart,
+  onChangeEnd,
+  direction = 'row',
+}) => {
   const [isCurrent, setIsCurrent] = useState<boolean>(() => period.end === CURRENT)
   const isRow = direction === 'row'
 
@@ -50,7 +56,11 @@ const EditModeFromToDatePicker: FC<Props> = ({  period, onChangeStart, onChangeE
         {/* 年月選択・現在切り替えボタン */}
         {isCurrent
           ? <Button onClick={() => setIsCurrent(false)}>入力</Button>
-          : <Button onClick={handleSelectCurrent}>現在</Button>}
+          : <Button onClick={handleSelectCurrent}>現在</Button>
+        }
+
+        {/* 期間 */}
+        {!isRow && `（${calculateDuration(period)}）`}
       </StyledStack>
     </>
   )

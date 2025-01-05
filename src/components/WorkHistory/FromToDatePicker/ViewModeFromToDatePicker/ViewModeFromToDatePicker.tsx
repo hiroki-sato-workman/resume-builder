@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import {PeriodType} from '../../../../types';
 import {CURRENT} from '../../WorkHistory.constant';
 import { StyledStack } from '../../../../shared/components';
+import {calculateDuration} from '../../../../services/calculateDuration.service';
 
 interface Props {
   period: PeriodType
@@ -23,6 +24,8 @@ const ViewModeFromToDatePicker: FC<Props> = ({  period, direction = 'row'}) => {
         <Box>{formatDate(period.start)}</Box>
         <Box>～</Box>
         <Box>{formatDate(period.end)}</Box>
+        {/* 期間 */}
+        {`（${calculateDuration(period)}）`}
       </StyledStack>
     </>
   )

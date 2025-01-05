@@ -9,9 +9,15 @@ interface Props {
   onChangeStart: (date: string) => void
   onChangeEnd: (date: string) => void
   direction?: 'row' | 'column'
+  isDisplayCurrent?: boolean,
 }
 
-const FromToDatePicker: FC<Props> = ({ isEditMode, period, onChangeStart, onChangeEnd, direction }) => {
+const FromToDatePicker: FC<Props> = ({
+  isEditMode, period,
+  onChangeStart,
+  onChangeEnd,
+  direction,
+}) => {
   return (
     <>
       {isEditMode ? (
