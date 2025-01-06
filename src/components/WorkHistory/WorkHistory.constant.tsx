@@ -18,14 +18,21 @@ export const INITIAL_WORK_COMPANY: WorkCompany = {
 
 export const INITIAL_WORK_HISTORY: WorkExperience = {
   period: { start: '', end: '' },
-  projectTitle: '',
-  projectDescription: '',
-  assignments: [],
-  achievements: '',
+  businessDetails: {
+    projectTitle: '',
+    projectDescription: '',
+    assignments: [],
+    achievements: '',
+  },
+  technicalEnvironment: {
+    os: [],
+    language: [],
+    db: [],
+    others: [],
+  },
   organization: {
     teamSize: '',
     totalSize: '',
     roles: []
   },
-  technicalEnvironment: []
 }

@@ -20,6 +20,7 @@ import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services
 import FromToDatePicker from './FromToDatePicker';
 import {INITIAL_WORK_COMPANY, INITIAL_WORK_HISTORY, ROLES} from './WorkHistory.constant';
 import {StyledStack} from '../../shared/components';
+import TextFieldForWorkHistory from './TextFieldForWorkHistory';
 
 interface Props {
   isEditMode: boolean;
@@ -118,19 +119,16 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
             <TableHead>
               <TableRow>
                 <TableCell width={isEditMode ? 160 : 120}>期間</TableCell>
-                <TableCell width={isEditMode ? 450 : 360}>業務内容</TableCell>
-                <TableCell width={isEditMode ? 400 : 250}>組織/役割</TableCell>
+                <TableCell width="auto">業務内容</TableCell>
+                <TableCell width={isEditMode ? 160 : 120}>環境・言語</TableCell>
+                <TableCell width={isEditMode ? 200 : 150}>組織・役割</TableCell>
                 {isEditMode && <TableCell>操作</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
               {company.experiences.map((exp, expIndex) => (
-                <TableRow
-                  key={expIndex}
-                  sx={{
-                    border: '1px solid rgba(224, 224, 224, 1)',
-                  }}
-                >
+                <TableRow key={expIndex}>
+                  {/* 期間 */}
                   <TableCell>
                     <FromToDatePicker
                       isEditMode={isEditMode}
@@ -149,198 +147,163 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                     />
                   </TableCell>
 
+                  {/* 業務内容 */}
                   <TableCell>
                     <Stack spacing={2}>
-                      <Stack>
-                        <strong>【プロジェクト名】</strong>
-                        {isEditMode ? (
-                          <TextField
-                            size="small"
-                            fullWidth
-                            defaultValue={exp.projectTitle}
-                            onChange={(e) => {
-                              const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].projectTitle = e.target.value;
-                              handleChangeWorkHistoryData(newHistory);
-                            }}
-                          />
-                        ) : (exp.projectTitle)}
-                      </Stack>
+                      {/* プロジェクト名 */}
+                      <TextFieldForWorkHistory
+                        label="プロジェクト名"
+                        subCategories="projectTitle"
+                        mainCategories="businessDetails"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
 
-                      <Stack>
-                        <strong>【概要】</strong>
-                        {isEditMode ? (
-                          <TextField
-                            fullWidth
-                            multiline
-                            minRows={3}
-                            defaultValue={exp.projectDescription}
-                            onChange={(e) => {
-                              const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].projectDescription = e.target.value;
-                              handleChangeWorkHistoryData(newHistory);
-                            }}
-                          />
-                        ) : (
-                          <Box style={{ whiteSpace: 'pre-wrap' }}>
-                            {exp.projectDescription}
-                          </Box>
-                        )}
-                      </Stack>
+                      {/* 概要 */}
+                      <TextFieldForWorkHistory
+                        label="概要"
+                        subCategories="projectDescription"
+                        mainCategories="businessDetails"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
 
-                      <Stack>
-                        <strong>【担当フェーズ】</strong>
-                        {isEditMode ? (
-                          <TextField
-                            fullWidth
-                            multiline
-                            minRows={3}
-                            defaultValue={exp.assignments.join('\n')}
-                            onChange={(e) => {
-                              const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].assignments =
-                                e.target.value.split('\n');
-                              handleChangeWorkHistoryData(newHistory);
-                            }}
-                          />
-                        ) : (
-                          <ul>
-                            {exp.assignments.map((assignment, i) => (
-                              <li key={i}>{assignment}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </Stack>
+                      {/* 担当フェーズ */}
+                      <TextFieldForWorkHistory
+                        label="担当フェーズ"
+                        subCategories="assignments"
+                        mainCategories="businessDetails"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
 
-                      <Stack>
-                        <strong>【実績・取り組み】</strong>
-                        {isEditMode ? (
-                          <TextField
-                            fullWidth
-                            multiline
-                            minRows={3}
-                            defaultValue={exp.achievements}
-                            onChange={(e) => {
-                              const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].achievements = e.target.value;
-                              handleChangeWorkHistoryData(newHistory);
-                            }}
-                          />
-                        ) : (
-                          <Box style={{ whiteSpace: 'pre-wrap' }}>
-                            {exp.achievements}
-                          </Box>
-                        )}
-                      </Stack>
+                      {/* 実績・取り組み */}
+                      <TextFieldForWorkHistory
+                        label="実績・取り組み"
+                        subCategories="achievements"
+                        mainCategories="businessDetails"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
+                    </Stack>
+
+
+                  </TableCell>
+
+                  {/* 環境・言語 */}
+                  <TableCell>
+                    <Stack spacing={2}>
+                      {/* OS */}
+                      <TextFieldForWorkHistory
+                        label="OS"
+                        subCategories="os"
+                        mainCategories="technicalEnvironment"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
+
+                      {/* 言語 */}
+                      <TextFieldForWorkHistory
+                        label="言語"
+                        subCategories="language"
+                        mainCategories="technicalEnvironment"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
+
+                      {/* DB */}
+                      <TextFieldForWorkHistory
+                        label="DB"
+                        subCategories="db"
+                        mainCategories="technicalEnvironment"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
+
+                      {/* その他 */}
+                      <TextFieldForWorkHistory
+                        label="その他"
+                        subCategories="others"
+                        mainCategories="technicalEnvironment"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
                     </Stack>
                   </TableCell>
 
+                  {/* 組織・役割 */}
                   <TableCell>
                     <Stack spacing={2}>
-                      <Stack>
-                        <strong>【組織】</strong>
-                        <StyledStack direction="row">
-                          <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
-                            <Box width={60}>チーム：</Box>
-                            {isEditMode ? (
-                              <TextField
-                                size="small"
-                                type="number"
-                                defaultValue={exp.organization.teamSize}
-                                onChange={(e) => {
-                                  const newHistory = [...workHistory];
-                                  newHistory[companyIndex].experiences[expIndex].organization.teamSize = e.target.value;
-                                  handleChangeWorkHistoryData(newHistory);
-                                }}
-                                sx={{ width: '80px' }}
-                              />
-                            ) : (
-                              exp.organization.teamSize
-                            )}
-                            <Box ml={0.5}>名</Box>
-                          </Stack>
-                          <Box>/</Box>
-                          <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
-                            <Box>全体：</Box>
-                            {isEditMode ? (
-                              <TextField
-                                size="small"
-                                type="number"
-                                defaultValue={exp.organization.totalSize}
-                                onChange={(e) => {
-                                  const newHistory = [...workHistory];
-                                  newHistory[companyIndex].experiences[expIndex].organization.totalSize = e.target.value;
-                                  handleChangeWorkHistoryData(newHistory);
-                                }}
-                                sx={{ width: '80px' }}
-                              />
-                            ) : (
-                              exp.organization.totalSize
-                            )}
-                            <Box ml={0.5}>名</Box>
-                          </Stack>
-                        </StyledStack>
-                      </Stack>
-
-                      <Box>
-                        <strong>【役割】</strong>
-                        {isEditMode ? (
-                          <Select
-                            multiple
-                            fullWidth
-                            size="small"
-                            defaultValue={exp.organization.roles}
-                            onChange={(e) => {
-                              const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].organization.roles =
-                                e.target.value as Role[];
-                                handleChangeWorkHistoryData(newHistory);
-                            }}
-                           // FIXME: 値がレンダリングされない & 値が変更できない問題を修正
-                            renderValue={(selected) => (
-                              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                {(selected as string[]).map((value) => (
-                                  <Chip key={value} label={value} size="small" />
-                                ))}
-                              </Box>
-                            )}
-                          >
-                            {ROLES.map((role) => (
-                              <MenuItem key={role} defaultValue={role}>
-                                {role}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        ) : (
-                          <div>{exp.organization.roles.join(' / ')}</div>
-                        )}
-                      </Box>
-
-                      <Box>
-                        <strong>【言語・環境】</strong>
+                      <strong>【組織】</strong>
+                      <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
+                        <Box width={60}>チーム：</Box>
                         {isEditMode ? (
                           <TextField
-                            fullWidth
-                            multiline
-                            defaultValue={exp.technicalEnvironment.join('\n')}
+                            size="small"
+                            type="number"
+                            defaultValue={exp.organization.teamSize}
                             onChange={(e) => {
                               const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].technicalEnvironment =
-                                e.target.value.split('\n');
-                                handleChangeWorkHistoryData(newHistory);
+                              newHistory[companyIndex].experiences[expIndex].organization.teamSize = e.target.value;
+                              handleChangeWorkHistoryData(newHistory);
                             }}
+                            sx={{ width: '80px' }}
                           />
                         ) : (
-                          <ul>
-                            {exp.technicalEnvironment.map((tech, i) => (
-                              <li key={i}>{tech}</li>
-                            ))}
-                          </ul>
+                          exp.organization.teamSize
                         )}
-                      </Box>
+                        <Box ml={0.5}>名</Box>
+                      </Stack>
+                      <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
+                        <Box>全体：</Box>
+                        {isEditMode ? (
+                          <TextField
+                            size="small"
+                            type="number"
+                            defaultValue={exp.organization.totalSize}
+                            onChange={(e) => {
+                              const newHistory = [...workHistory];
+                              newHistory[companyIndex].experiences[expIndex].organization.totalSize = e.target.value;
+                              handleChangeWorkHistoryData(newHistory);
+                            }}
+                            sx={{ width: '80px' }}
+                          />
+                        ) : (
+                          exp.organization.totalSize
+                        )}
+                        <Box ml={0.5}>名</Box>
+                      </Stack>
+
+                      {/* 役割 */}
+                      <TextFieldForWorkHistory
+                        label="役割"
+                        mainCategories="organization"
+                        subCategories="roles"
+                        isEditMode={isEditMode}
+                        companyIndex={companyIndex}
+                        expIndex={expIndex}
+                        onChangeWorkHistory={handleChangeWorkHistoryData}
+                      />
                     </Stack>
                   </TableCell>
 
+                  {/* 操作 */}
                   {isEditMode && (
                     <TableCell>
                       <IconButton

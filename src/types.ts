@@ -43,14 +43,28 @@ export interface PeriodType {
 export interface WorkExperience {
   /** プロジェクト期間 */
   period: PeriodType
-  /** プロジェクト名 */
-  projectTitle: string;
-  /** プロジェクト概要 */
-  projectDescription: string;
-  /** 担当フェーズ */
-  assignments: string[];
-  /** 実績・取り組み */
-  achievements: string
+  /** 業務内容 */
+  businessDetails: {
+    /** プロジェクト名 */
+    projectTitle: string;
+    /** プロジェクト概要 */
+    projectDescription: string;
+    /** 担当フェーズ */
+    assignments: string[];
+    /** 実績・取り組み */
+    achievements: string;
+  }
+  /** 環境・言語 */
+  technicalEnvironment: {
+    /** OS */
+    os: string[];
+    /** 言語 */
+    language: string[];
+    /** データベース */
+    db: string[];
+    /** その他 */
+    others: string[];
+  };
   /** 組織情報 */ 
   organization: {
     /** チーム人数 */
@@ -60,8 +74,6 @@ export interface WorkExperience {
     /** 役割 */
     roles: Role[];
   };
-  /** 言語・環境 */
-  technicalEnvironment: string[];
 }
 
 /** 職歴（会社） */
