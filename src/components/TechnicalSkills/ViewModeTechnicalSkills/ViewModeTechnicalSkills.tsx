@@ -1,4 +1,4 @@
-import {Box, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
 import {TechnicalSkill} from '../../../types';
 import {CATEGORIES} from '../TechnicalSkills.constant';
 import {FC} from 'react';
@@ -12,13 +12,13 @@ const ViewModeTechnicalSkills: FC<Props> = ({ technicalSkills }: Props) => {
     <Table size="small">
       <TableHead>
         <TableRow>
-          <TableCell>
+          <TableCell  width={175}>
             カテゴリ
           </TableCell>
           <TableCell>
             種別
           </TableCell>
-          <TableCell>
+          <TableCell width={95}>
             経験年数
           </TableCell>
           <TableCell>

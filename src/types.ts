@@ -49,7 +49,7 @@ export interface WorkExperience {
     projectTitle: string;
     /** プロジェクト概要 */
     projectDescription: string;
-    /** 担当フェーズ */
+    /** 担当業務 */
     assignments: string[];
     /** 実績・取り組み */
     achievements: string;

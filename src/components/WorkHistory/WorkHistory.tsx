@@ -168,9 +168,9 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                         onChangeWorkHistory={handleChangeWorkHistoryData}
                       />
 
-                      {/* 担当フェーズ */}
+                      {/* 担当業務 */}
                       <TextFieldForWorkHistory
-                        label="担当フェーズ"
+                        label="担当業務"
                         subCategories="assignments"
                         mainCategories="businessDetails"
                         isEditMode={isEditMode}
@@ -246,44 +246,46 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
                   {/* 組織・役割 */}
                   <TableCell>
                     <Stack spacing={2}>
-                      <strong>【組織】</strong>
-                      <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
-                        <Box width={60}>チーム：</Box>
-                        {isEditMode ? (
-                          <TextField
-                            size="small"
-                            type="number"
-                            defaultValue={exp.organization.teamSize}
-                            onChange={(e) => {
-                              const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].organization.teamSize = e.target.value;
-                              handleChangeWorkHistoryData(newHistory);
-                            }}
-                            sx={{ width: '80px' }}
-                          />
-                        ) : (
-                          exp.organization.teamSize
-                        )}
-                        <Box ml={0.5}>名</Box>
-                      </Stack>
-                      <Stack direction="row" sx={{ mt: 1 }} alignItems="center">
-                        <Box>全体：</Box>
-                        {isEditMode ? (
-                          <TextField
-                            size="small"
-                            type="number"
-                            defaultValue={exp.organization.totalSize}
-                            onChange={(e) => {
-                              const newHistory = [...workHistory];
-                              newHistory[companyIndex].experiences[expIndex].organization.totalSize = e.target.value;
-                              handleChangeWorkHistoryData(newHistory);
-                            }}
-                            sx={{ width: '80px' }}
-                          />
-                        ) : (
-                          exp.organization.totalSize
-                        )}
-                        <Box ml={0.5}>名</Box>
+                      <Stack>
+                        <strong>【組織】</strong>
+                        <Stack direction="row" alignItems="center">
+                          <Box width={60}>チーム：</Box>
+                          {isEditMode ? (
+                            <TextField
+                              size="small"
+                              type="number"
+                              defaultValue={exp.organization.teamSize}
+                              onChange={(e) => {
+                                const newHistory = [...workHistory];
+                                newHistory[companyIndex].experiences[expIndex].organization.teamSize = e.target.value;
+                                handleChangeWorkHistoryData(newHistory);
+                              }}
+                              sx={{width: '80px'}}
+                            />
+                          ) : (
+                            exp.organization.teamSize
+                          )}
+                          <Box ml={0.5}>名</Box>
+                        </Stack>
+                        <Stack direction="row" alignItems="center">
+                          <Box>全体：</Box>
+                          {isEditMode ? (
+                            <TextField
+                              size="small"
+                              type="number"
+                              defaultValue={exp.organization.totalSize}
+                              onChange={(e) => {
+                                const newHistory = [...workHistory];
+                                newHistory[companyIndex].experiences[expIndex].organization.totalSize = e.target.value;
+                                handleChangeWorkHistoryData(newHistory);
+                              }}
+                              sx={{width: '80px'}}
+                            />
+                          ) : (
+                            exp.organization.totalSize
+                          )}
+                          <Box ml={0.5}>名</Box>
+                        </Stack>
                       </Stack>
 
                       {/* 役割 */}
