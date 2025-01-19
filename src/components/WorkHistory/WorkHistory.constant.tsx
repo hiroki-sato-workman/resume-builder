@@ -1,6 +1,6 @@
 import {Role, WorkCompany, WorkExperience} from '../../types';
 
-export const CURRENT = '現在';
+
 
 export const ROLES: Role[] = [
   'メンバー',

@@ -11,6 +11,7 @@ import {
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import {CertificationType} from '../../types';
 import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
+import {formatDate} from '../../services/date.service';
 
 interface Props {
   isEditMode: boolean;
@@ -98,7 +99,7 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
             .map((cert, index) => (
               <ListItem key={index} sx={{ display: 'list-item', padding: '4px 0' }}>
                 <Stack direction="row" spacing={4}>
-                  <Box>{cert.date}</Box>
+                  <Box>{formatDate(cert.date)}</Box>
                   <Box>{cert.name}</Box>
                 </Stack>
               </ListItem>

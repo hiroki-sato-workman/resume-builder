@@ -10,16 +10,12 @@ import {
   TableCell,
   Stack,
   IconButton,
-  Select,
-  MenuItem,
-  Chip,
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import {Role, WorkCompany} from '../../types';
+import { WorkCompany } from '../../types';
 import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
 import FromToDatePicker from './FromToDatePicker';
-import {INITIAL_WORK_COMPANY, INITIAL_WORK_HISTORY, ROLES} from './WorkHistory.constant';
-import {StyledStack} from '../../shared/components';
+import {INITIAL_WORK_COMPANY, INITIAL_WORK_HISTORY} from './WorkHistory.constant';
 import TextFieldForWorkHistory from './TextFieldForWorkHistory';
 
 interface Props {

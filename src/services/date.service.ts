@@ -1,5 +1,17 @@
 import { PeriodType } from '../types';
-import { CURRENT } from '../components/WorkHistory/WorkHistory.constant';
+
+export const CURRENT = '現在';
+
+/**
+ * `YYYY-MM-DD` 形式の日付を `YYYY年MM月DD日` 形式に変換する
+ * @param dateStr 変換する日付
+ * @returns {string} 変換した日付
+ */
+export const formatDate = (dateStr: string): string=> {
+  if (dateStr === CURRENT) return dateStr
+  const [year, month] = dateStr.split('-');
+  return `${year}年${parseInt(month)}月`;
+};
 
 /**
  * 期間を計算する

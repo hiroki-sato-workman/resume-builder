@@ -1,9 +1,8 @@
 import {FC, useState} from 'react';
 import {Box, Button, TextField} from '@mui/material';
 import {PeriodType} from '../../../../types';
-import {CURRENT} from '../../WorkHistory.constant';
 import {StyledStack} from '../../../../shared/components';
-import {calculateDuration} from '../../../../services/calculateDuration.service';
+import {calculateDuration, CURRENT} from '../../../../services/date.service';
 
 interface Props {
   period: PeriodType
