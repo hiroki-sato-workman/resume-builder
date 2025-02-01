@@ -114,7 +114,7 @@ const WorkHistory: FC<Props> = ({ isEditMode }) => {
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell width={isEditMode ? 160 : 120}>期間</TableCell>
+                <TableCell width={isEditMode ? 160 : 125}>期間</TableCell>
                 <TableCell width="auto">業務内容</TableCell>
                 <TableCell width={isEditMode ? 160 : 120}>環境・言語</TableCell>
                 <TableCell width={isEditMode ? 200 : 150}>組織・役割</TableCell>

@@ -12,7 +12,7 @@ export default function StyledStack ({ direction = 'row', children}: Props) {
   return (
     <Stack
       direction={direction}
-      spacing={1}
+      spacing={0}
       alignItems="center"
       display={isRow ? 'inline-flex' : 'flex'}
     >
