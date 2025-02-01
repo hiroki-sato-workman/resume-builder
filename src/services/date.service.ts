@@ -28,7 +28,7 @@ export const calculateDuration = (period: PeriodType): string => {
   // 年月を計算
   const totalMonths = toDate.getMonth() - fromDate.getMonth() + 12 * (toDate.getFullYear() - fromDate.getFullYear());
   const years = Math.floor(totalMonths / 12);
-  const months = totalMonths % 12;
+  const months = (totalMonths % 12) + 1;
   // フォーマットした年月
   const formattedYears = years > 0 ? `${years}年` : ''
   const formattedMonth = months > 0 || years === 0 ? `${months}ヶ月` : ''
