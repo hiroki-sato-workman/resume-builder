@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { TextField, Box, styled } from '@mui/material';
 import {getViewModeStyles} from '../../styles/viewModeStyles';
 import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
+import {usePageTitle} from '../../shared/hooks';
 
 
 const NameContainer = styled(Box)({
@@ -21,6 +22,8 @@ const ResumeHeader: FC<Props> = ({ isEditMode }) => {
   const today = new Date();
   const dateString = `${today.getFullYear()}年${today.getMonth() + 1}月${today.getDate()}日現在`;
   const viewModeStyles = getViewModeStyles(isEditMode);
+
+  usePageTitle({name})
 
   const handleChangeName = (name: string) => {
     saveStoredResumeData('name', name)
