@@ -1,4 +1,4 @@
-import {FC, useState} from 'react';
+import {FC} from 'react';
 import {
   Box,
   List,
@@ -9,8 +9,8 @@ import {
   Stack,
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import {CertificationType} from '../../types';
-import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
+import {useAtom} from 'jotai';
+import {certificationsAtom} from '../../atoms';
 import {formatDate} from '../../services/date.service';
 
 interface Props {
@@ -18,19 +18,14 @@ interface Props {
 }
 
 const Certifications: FC<Props> = ({ isEditMode }) => {
-  const [certifications, setCertifications] = useState<CertificationType[]>(() => getSpecifiedStoredResumeData('certifications'));
-
-  const handleChangeCertificationData = (certifications: CertificationType[]) => {
-    setCertifications(certifications)
-    saveStoredResumeData('certifications', certifications)
-  }
+  const [certifications, setCertifications] = useAtom(certificationsAtom);
 
   const handleAdd = () => {
-    handleChangeCertificationData([...certifications, { name: '', date: '' }]);
+    setCertifications([...certifications, { name: '', date: '' }]);
   };
 
   const handleDelete = (index: number) => {
-    handleChangeCertificationData(certifications.filter((_, i) => i !== index));
+    setCertifications(certifications.filter((_, i) => i !== index));
   };
 
   if (!isEditMode && (!certifications.length || certifications.every(cert => !cert.name && !cert.date))) {
@@ -57,7 +52,7 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
                 onChange={(e) => {
                   const newCerts = [...certifications];
                   newCerts[index] = { ...newCerts[index], date: e.target.value };
-                  handleChangeCertificationData(newCerts);
+                  setCertifications(newCerts);
                 }}
                 sx={{ width: 150, mr: 1 }}
               />
@@ -68,7 +63,7 @@ const Certifications: FC<Props> = ({ isEditMode }) => {
                 onChange={(e) => {
                   const newCerts = [...certifications];
                   newCerts[index] = { ...newCerts[index], name: e.target.value };
-                  handleChangeCertificationData(newCerts);
+                  setCertifications(newCerts);
                 }}
                 placeholder="資格名"
                 sx={{ mr: 2, flex: 1 }}

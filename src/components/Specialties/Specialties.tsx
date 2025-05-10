@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Box, List, ListItem, TextField } from '@mui/material';
-import { SpecialtiesType } from '../../types';
 import { SxProps } from '@mui/system';
-import {getSpecifiedStoredResumeData, saveStoredResumeData} from '../../services/storage.service';
+import { useAtom } from 'jotai';
+import { specialtiesAtom } from '../../atoms';
 
 interface Props {
   isEditMode: boolean
@@ -10,11 +10,7 @@ interface Props {
 }
 
 const Specialties: FC<Props> = ({ isEditMode, viewModeStyles}: Props) => {
-  const specialties = getSpecifiedStoredResumeData('specialties');
-
-  const handleChangeSpecialtiesData = (specialties: SpecialtiesType) => {
-    saveStoredResumeData('specialties', specialties)
-  }
+  const [specialties, setSpecialties] = useAtom(specialtiesAtom);
 
   return (
     <Box sx={{ mb: 4 }}>
@@ -24,8 +20,8 @@ const Specialties: FC<Props> = ({ isEditMode, viewModeStyles}: Props) => {
           fullWidth
           multiline
           minRows={3}
-          defaultValue={specialties}
-          onChange={(e) => handleChangeSpecialtiesData(e.target.value)}
+          value={specialties}
+          onChange={(e) => setSpecialties(e.target.value)}
           placeholder="各項目を改行で区切って入力してください"
           sx={viewModeStyles.textField}
         />

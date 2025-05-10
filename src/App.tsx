@@ -1,8 +1,10 @@
-import {FC, useEffect, useState} from 'react';
+import {FC} from 'react';
 import {
   ThemeProvider,
   CssBaseline,
 } from '@mui/material';
+import {useAtom} from 'jotai';
+import {isEditModeAtom} from './atoms';
 
 // Components
 import ResumeHeader from './components/ResumeHeader';
@@ -20,7 +22,7 @@ import AppTemplate from './App.template';
 import Specialties from './components/Specialties';
 
 const App: FC = () => {
-  const [isEditMode, setIsEditMode] = useState(true);
+  const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
 
   const viewModeStyles = getViewModeStyles(isEditMode);
 

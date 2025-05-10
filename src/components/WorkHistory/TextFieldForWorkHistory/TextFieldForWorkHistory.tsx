@@ -1,7 +1,8 @@
 import {useMemo} from 'react';
 import {Box, TextField} from '@mui/material';
-import {getSpecifiedStoredResumeData} from '../../../services/storage.service';
 import {WorkCompany, WorkExperience} from '../../../types';
+import {useAtom} from 'jotai';
+import {workHistoryAtom} from '../../../atoms';
 
 type SubCategories<T extends keyof WorkExperience> = T extends keyof WorkExperience
   ? keyof WorkExperience[T]
@@ -24,8 +25,8 @@ interface Props<T extends keyof WorkExperience> {
 }
 
 const TextFieldForWorkHistory = <T extends keyof WorkExperience>({ isEditMode, label, companyIndex, expIndex, mainCategories, subCategories, onChangeWorkHistory }: Props<T>) => {
-  const storedWorkHistory = getSpecifiedStoredResumeData('workHistory');
-  const item = storedWorkHistory[companyIndex].experiences[expIndex][mainCategories][subCategories] as WorkExperienceValue<T, typeof subCategories>;
+  const [workHistory] = useAtom(workHistoryAtom);
+  const item = workHistory[companyIndex].experiences[expIndex][mainCategories][subCategories] as WorkExperienceValue<T, typeof subCategories>;
   const isArrayItemType = Array.isArray(item)
   const isDisplayLabel = useMemo((): boolean => {
     const isEmpty = (() => {
@@ -40,12 +41,12 @@ const TextFieldForWorkHistory = <T extends keyof WorkExperience>({ isEditMode, l
   const handleChange = (value: string): void => {
     const processValue = (input: string): WorkExperienceValue<T, SubCategories<T>> => {
       // ここで isArrayItemType の判定をする（実装に応じて）
-      const isArrayValue = Array.isArray(storedWorkHistory[companyIndex].experiences[expIndex][mainCategories][subCategories]);
+      const isArrayValue = Array.isArray(workHistory[companyIndex].experiences[expIndex][mainCategories][subCategories]);
       return isArrayValue ? input.split('\n') as WorkExperienceValue<T, SubCategories<T>>
         : input as WorkExperienceValue<T, SubCategories<T>>;
     };
 
-    const updatedWorkHistory = storedWorkHistory.map((company, cIndex) =>
+    const updatedWorkHistory = workHistory.map((company, cIndex) =>
       cIndex !== companyIndex ? company : {
         ...company,
         experiences: company.experiences.map((exp, eIndex) =>

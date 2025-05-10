@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import {
   Box,
   TextField,
@@ -7,8 +7,8 @@ import {
   styled
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { SelfPromotionType } from '../../types';
-import { getSpecifiedStoredResumeData, saveStoredResumeData } from '../../services/storage.service';
+import { useAtom } from 'jotai';
+import { selfPromotionAtom } from '../../atoms';
 
 interface SelfPromotionSection {
   title: string;
@@ -26,25 +26,20 @@ interface Props {
 }
 
 const SelfPromotion: FC<Props> = ({ isEditMode }) => {
-  const [selfPromotionData, setSelfPromotionData] = useState<SelfPromotionType[]>(() => getSpecifiedStoredResumeData('selfPromotion'));
-
-  const handleChangeSelfPromotionData = (selfPromotion: SelfPromotionType[]) => {
-    setSelfPromotionData(selfPromotion)
-    saveStoredResumeData('selfPromotion', selfPromotion)
-  }
+  const [selfPromotionData, setSelfPromotionData] = useAtom(selfPromotionAtom);
 
   const handleAdd = () => {
-    handleChangeSelfPromotionData([...selfPromotionData, { title: '', content: '' }]);
+    setSelfPromotionData([...selfPromotionData, { title: '', content: '' }]);
   };
 
   const handleDelete = (index: number) => {
-    handleChangeSelfPromotionData(selfPromotionData.filter((_, i) => i !== index));
+    setSelfPromotionData(selfPromotionData.filter((_, i) => i !== index));
   };
 
   const handleChange = (index: number, field: keyof SelfPromotionSection, value: string) => {
     const newContent = [...selfPromotionData];
     newContent[index] = { ...newContent[index], [field]: value };
-    handleChangeSelfPromotionData(newContent);
+    setSelfPromotionData(newContent);
   };
 
   return (
