@@ -1,7 +1,5 @@
 import {Role, WorkCompany, WorkExperience} from '../../types';
 
-
-
 export const ROLES: Role[] = [
   'メンバー',
   'サブリーダー',
@@ -13,8 +11,10 @@ export const ROLES: Role[] = [
 export const INITIAL_WORK_COMPANY: WorkCompany = {
   companyName: '',
   period: { start: '', end: '' },
-  experiences: []
+  experiences: {}
 }
+
+export const INITIAL_WORK_HISTORY_MAP = {};
 
 export const INITIAL_WORK_HISTORY: WorkExperience = {
   period: { start: '', end: '' },

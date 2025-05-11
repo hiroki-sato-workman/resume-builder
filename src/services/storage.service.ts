@@ -1,11 +1,12 @@
 import { ResumeData } from '../types';
+import { INITIAL_WORK_HISTORY_MAP } from '../components/WorkHistory/WorkHistory.constant';
 
 const initialResumeData: ResumeData = {
   name: '',
   summary: '',
   specialties: '',
   technicalSkills: [],
-  workHistory: [],
+  workHistory: INITIAL_WORK_HISTORY_MAP,
   certifications: [],
   selfPromotion: []
 };

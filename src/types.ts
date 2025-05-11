@@ -76,6 +76,9 @@ export interface WorkExperience {
   };
 }
 
+/** 経験のマップ型 */
+export type WorkExperienceMap = Record<string, WorkExperience>;
+
 /** 職歴（会社） */
 export interface WorkCompany {
   /** 会社名 */
@@ -83,8 +86,11 @@ export interface WorkCompany {
   /** 勤務期間 */
   period: PeriodType
   /** 業務内容 */
-  experiences: WorkExperience[];
+  experiences: WorkExperienceMap;
 }
+
+/** 会社のマップ型 */
+export type WorkCompanyMap = Record<string, WorkCompany>;
 
 /** 自己PR */
 export interface SelfPromotionType {
@@ -117,7 +123,7 @@ export interface ResumeData {
   /** テクニカルスキル */
   technicalSkills: TechnicalSkill[];
   /** 職務経歴 */
-  workHistory: WorkCompany[];
+  workHistory: WorkCompanyMap;
   /** 資格 */
   certifications: CertificationType[];
   /** 自己PR */

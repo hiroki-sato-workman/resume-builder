@@ -1,6 +1,7 @@
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
-import { ResumeData, TechnicalSkill, WorkCompany, CertificationType, SelfPromotionType } from '../types';
+import { ResumeData, TechnicalSkill, WorkCompanyMap, CertificationType, SelfPromotionType } from '../types';
+import { INITIAL_WORK_HISTORY_MAP } from '../components/WorkHistory/WorkHistory.constant';
 
 /**
  * 初期値の定義
@@ -10,7 +11,7 @@ const initialResumeData: ResumeData = {
   summary: '',
   specialties: '',
   technicalSkills: [],
-  workHistory: [],
+  workHistory: INITIAL_WORK_HISTORY_MAP,
   certifications: [],
   selfPromotion: []
 };
@@ -71,11 +72,11 @@ export const technicalSkillsAtom = atom(
 
 /**
  * 職務経歴atom
- * @returns {WorkCompany[]} 職務経歴
+ * @returns {WorkCompanyMap} 職務経歴
  */
 export const workHistoryAtom = atom(
   (get) => get(resumeDataAtom).workHistory,
-  (get, set, workHistory: WorkCompany[]) => {
+  (get, set, workHistory: WorkCompanyMap) => {
     const current = get(resumeDataAtom);
     set(resumeDataAtom, { ...current, workHistory });
   }

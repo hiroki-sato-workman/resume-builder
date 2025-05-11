@@ -1,67 +1,115 @@
-import {useMemo} from 'react';
-import {Box, TextField} from '@mui/material';
-import {WorkCompany, WorkExperience} from '../../../types';
-import {useAtom} from 'jotai';
-import {workHistoryAtom} from '../../../atoms';
+import React, { useMemo } from 'react';
+import { Box, TextField } from '@mui/material';
+import { WorkExperience } from '../../../types';
+import { useAtom } from 'jotai';
+import { 
+  projectTitleAtomFamily,
+  projectDescriptionAtomFamily,
+  assignmentsAtomFamily,
+  achievementsAtomFamily,
+  osAtomFamily,
+  languageAtomFamily,
+  dbAtomFamily,
+  othersAtomFamily,
+  teamSizeAtomFamily,
+  totalSizeAtomFamily,
+  rolesAtomFamily,
+  experiencePeriodAtomFamily
+} from '../../../atoms/workHistoryAtoms';
 
 type SubCategories<T extends keyof WorkExperience> = T extends keyof WorkExperience
   ? keyof WorkExperience[T]
   : never;
 
-// 値の型を取得するユーティリティ型
-type WorkExperienceValue<
-  T extends keyof WorkExperience,
-  U extends keyof WorkExperience[T]
-> = WorkExperience[T][U];
-
 interface Props<T extends keyof WorkExperience> {
   isEditMode: boolean;
   label: string;
-  companyIndex: number;
-  expIndex: number;
+  companyId: string;
+  expId: string;
   mainCategories: T;
   subCategories: SubCategories<T>;
-  onChangeWorkHistory: (workHistory: WorkCompany[]) => void;
 }
 
-const TextFieldForWorkHistory = <T extends keyof WorkExperience>({ isEditMode, label, companyIndex, expIndex, mainCategories, subCategories, onChangeWorkHistory }: Props<T>) => {
-  const [workHistory] = useAtom(workHistoryAtom);
-  const item = workHistory[companyIndex].experiences[expIndex][mainCategories][subCategories] as WorkExperienceValue<T, typeof subCategories>;
-  const isArrayItemType = Array.isArray(item)
+/**
+ * 適切なアトムを選択する関数
+ */
+const getFieldAtom = <T extends keyof WorkExperience>(
+  mainCategories: T, 
+  subCategories: SubCategories<T>, 
+  companyId: string, 
+  expId: string
+) => {
+  // businessDetailsカテゴリの処理
+  if (mainCategories === 'businessDetails') {
+    const subCat = String(subCategories);
+    
+    if (subCat === 'projectTitle') return projectTitleAtomFamily({ companyId, expId });
+    if (subCat === 'projectDescription') return projectDescriptionAtomFamily({ companyId, expId });
+    if (subCat === 'assignments') return assignmentsAtomFamily({ companyId, expId });
+    if (subCat === 'achievements') return achievementsAtomFamily({ companyId, expId });
+  }
+  
+  // technicalEnvironmentカテゴリの処理
+  if (mainCategories === 'technicalEnvironment') {
+    const subCat = String(subCategories);
+    
+    if (subCat === 'os') return osAtomFamily({ companyId, expId });
+    if (subCat === 'language') return languageAtomFamily({ companyId, expId });
+    if (subCat === 'db') return dbAtomFamily({ companyId, expId });
+    if (subCat === 'others') return othersAtomFamily({ companyId, expId });
+  }
+  
+  // organizationカテゴリの処理
+  if (mainCategories === 'organization') {
+    const subCat = String(subCategories);
+    
+    if (subCat === 'teamSize') return teamSizeAtomFamily({ companyId, expId });
+    if (subCat === 'totalSize') return totalSizeAtomFamily({ companyId, expId });
+    if (subCat === 'roles') return rolesAtomFamily({ companyId, expId });
+  }
+  
+  // periodカテゴリの処理
+  if (mainCategories === 'period') {
+    return experiencePeriodAtomFamily({ companyId, expId });
+  }
+  
+  throw new Error(`Invalid field: ${String(mainCategories)}.${String(subCategories)}`);
+};
+
+const TextFieldForWorkHistory = <T extends keyof WorkExperience>({ 
+  isEditMode, 
+  label, 
+  companyId, 
+  expId, 
+  mainCategories, 
+  subCategories 
+}: Props<T>) => {
+  // 適切なアトムを選択
+  const fieldAtom = useMemo(() => 
+    getFieldAtom(mainCategories, subCategories, companyId, expId),
+    [companyId, expId, mainCategories, subCategories]
+  );
+  
+  const [value, setValue] = useAtom(fieldAtom);
+  
+  const isArrayItemType = Array.isArray(value);
+  
   const isDisplayLabel = useMemo((): boolean => {
     const isEmpty = (() => {
       // string の場合
-      if (!isArrayItemType) return !item
+      if (!isArrayItemType) return !value;
       // string[] の場合
-      return !item?.length || item.every(str => str === '');
-    })()
+      return !value?.length || value.every(str => str === '');
+    })();
     return isEditMode || !isEmpty;
-  }, [isArrayItemType, isEditMode, item])
+  }, [isArrayItemType, isEditMode, value]);
 
-  const handleChange = (value: string): void => {
-    const processValue = (input: string): WorkExperienceValue<T, SubCategories<T>> => {
-      // ここで isArrayItemType の判定をする（実装に応じて）
-      const isArrayValue = Array.isArray(workHistory[companyIndex].experiences[expIndex][mainCategories][subCategories]);
-      return isArrayValue ? input.split('\n') as WorkExperienceValue<T, SubCategories<T>>
-        : input as WorkExperienceValue<T, SubCategories<T>>;
-    };
-
-    const updatedWorkHistory = workHistory.map((company, cIndex) =>
-      cIndex !== companyIndex ? company : {
-        ...company,
-        experiences: company.experiences.map((exp, eIndex) =>
-          eIndex !== expIndex ? exp : {
-            ...exp,
-            [mainCategories]: {
-              ...exp[mainCategories],
-              [subCategories]: processValue(value)
-            }
-          }
-        )
-      }
-    );
-
-    onChangeWorkHistory(updatedWorkHistory);
+  const handleChange = (inputValue: string): void => {
+    if (isArrayItemType) {
+      setValue(inputValue.split('\n'));
+    } else {
+      setValue(inputValue);
+    }
   };
 
   return (
@@ -74,21 +122,21 @@ const TextFieldForWorkHistory = <T extends keyof WorkExperience>({ isEditMode, l
           fullWidth
           size="small"
           multiline={true}
-          defaultValue={isArrayItemType ? item.join('\n') : item}
+          defaultValue={isArrayItemType ? value.join('\n') : value}
           onChange={(e) => handleChange(e.target.value)}
         />
       ) : (
         <>
           {isArrayItemType
-            ? item?.map((value, i) => (
-              <Box key={i}>{value}</Box>
+            ? value?.map((val, i) => (
+              <Box key={i}>{val}</Box>
             ))
-            : <Box sx={{whiteSpace: 'pre-wrap'}}>{String(item)}</Box>
+            : <Box sx={{whiteSpace: 'pre-wrap'}}>{String(value)}</Box>
           }
         </>
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default TextFieldForWorkHistory;
+export default React.memo(TextFieldForWorkHistory);
