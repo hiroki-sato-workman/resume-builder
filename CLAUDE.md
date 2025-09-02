@@ -27,6 +27,12 @@
 - `npm run build` - `build/`フォルダに本番用バンドルをビルド
 - `npm test` - インタラクティブウォッチモードでテスト実行
 
+### デプロイ
+- `npm run deploy` - GitHub Pagesに手動デプロイ
+- `./scripts/deploy.sh` - デプロイスクリプト実行（ビルド含む）
+- GitHub Actionsによる自動デプロイ（mainブランチへのpush時）
+- 本番URL: https://hiroki-sato-workman.github.io/resume-builder
+
 ### 環境
 - Create React Appで作成されたTypeScript Reactアプリケーション
 - コードベース全体で日本語のコンポーネントとコメントを使用
@@ -88,6 +94,7 @@
 - type assertionは使用しないこと
 - `any`の使用を強く禁止する
 - 特に`as any`は絶対に使用しないこと
+- 文字列の結合にはテンプレート構文を使用すること
 
 ## 回答ルール
 
