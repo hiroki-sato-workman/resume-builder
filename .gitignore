@@ -141,6 +141,9 @@ dist
 # production
 /build
 
+# docs directory is committed for GitHub Pages deployment
+# /docs
+
 # misc
 .DS_Store
 .env.local

@@ -28,9 +28,8 @@
 - `npm test` - インタラクティブウォッチモードでテスト実行
 
 ### デプロイ
-- `npm run deploy` - GitHub Pagesに手動デプロイ
-- `./scripts/deploy.sh` - デプロイスクリプト実行（ビルド含む）
 - GitHub Actionsによる自動デプロイ（mainブランチへのpush時）
+- `npm run build`でビルド後、デプロイスクリプトで`build/`を`docs/`に移動してGitHub Pagesにデプロイ
 - 本番URL: https://hiroki-sato-workman.github.io/resume-builder
 
 ### 環境
