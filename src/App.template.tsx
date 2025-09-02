@@ -12,6 +12,7 @@ const AppTemplate: FC<Props> = ({ children, isEditMode }: Props) => {
       maxWidth={isEditMode ? "lg" : "md"}
       sx={{
         pb: 8,
+        pt: 8, // ヘッダー分の上部余白を追加
         '& .MuiContainer-root': {
           px: isEditMode ? 4 : 2
         }

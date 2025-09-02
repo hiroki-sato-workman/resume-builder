@@ -14,8 +14,7 @@ import WorkHistory from './components/WorkHistory';
 import Certifications from './components/Certifications';
 import SelfPromotion from './components/SelfPromotion';
 import ResumeFooter from './components/ResumeFooter';
-import ViewModeToggle from './components/ViewModeToggle';
-import HistoryToolbar from './shared/components/HistoryToolbar';
+import { AppHeader } from './components/AppHeader';
 import { useKeyboardShortcuts } from './shared/hooks/useKeyboardShortcuts';
 import { getViewModeStyles } from './styles/viewModeStyles';
 import { theme } from './theme';
@@ -34,11 +33,7 @@ const App: FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <HistoryToolbar />
-      <ViewModeToggle
-        isEditMode={isEditMode}
-        onToggle={() => setIsEditMode(!isEditMode)}
-      />
+      <AppHeader />
       <AppTemplate isEditMode={isEditMode}>
         {/* タイトル */}
         <ResumeTitle />
