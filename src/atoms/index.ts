@@ -2,6 +2,7 @@ import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { ResumeData, TechnicalSkill, WorkCompanyMap, CertificationType, SelfPromotionType } from '../types';
 import { INITIAL_WORK_HISTORY_MAP } from '../components/WorkHistory/WorkHistory.constant';
+import { addHistoryEntryAtom, undoAtom, redoAtom } from './historyAtoms';
 
 /**
  * 初期値の定義
@@ -30,7 +31,10 @@ export const nameAtom = atom(
   (get) => get(resumeDataAtom).name,
   (get, set, name: string) => {
     const current = get(resumeDataAtom);
-    set(resumeDataAtom, { ...current, name });
+    const newData = { ...current, name };
+    set(resumeDataAtom, newData);
+    // 履歴に追加
+    set(addHistoryEntryAtom, { data: newData, description: '名前を変更' });
   }
 );
 
@@ -42,7 +46,10 @@ export const summaryAtom = atom(
   (get) => get(resumeDataAtom).summary,
   (get, set, summary: string) => {
     const current = get(resumeDataAtom);
-    set(resumeDataAtom, { ...current, summary });
+    const newData = { ...current, summary };
+    set(resumeDataAtom, newData);
+    // 履歴に追加
+    set(addHistoryEntryAtom, { data: newData, description: '職務要約を変更' });
   }
 );
 
@@ -54,7 +61,10 @@ export const specialtiesAtom = atom(
   (get) => get(resumeDataAtom).specialties,
   (get, set, specialties: string) => {
     const current = get(resumeDataAtom);
-    set(resumeDataAtom, { ...current, specialties });
+    const newData = { ...current, specialties };
+    set(resumeDataAtom, newData);
+    // 履歴に追加
+    set(addHistoryEntryAtom, { data: newData, description: '得意分野を変更' });
   }
 );
 
@@ -66,7 +76,10 @@ export const technicalSkillsAtom = atom(
   (get) => get(resumeDataAtom).technicalSkills,
   (get, set, technicalSkills: TechnicalSkill[]) => {
     const current = get(resumeDataAtom);
-    set(resumeDataAtom, { ...current, technicalSkills });
+    const newData = { ...current, technicalSkills };
+    set(resumeDataAtom, newData);
+    // 履歴に追加
+    set(addHistoryEntryAtom, { data: newData, description: 'テクニカルスキルを変更' });
   }
 );
 
@@ -78,7 +91,10 @@ export const workHistoryAtom = atom(
   (get) => get(resumeDataAtom).workHistory,
   (get, set, workHistory: WorkCompanyMap) => {
     const current = get(resumeDataAtom);
-    set(resumeDataAtom, { ...current, workHistory });
+    const newData = { ...current, workHistory };
+    set(resumeDataAtom, newData);
+    // 履歴に追加
+    set(addHistoryEntryAtom, { data: newData, description: '職務経歴を変更' });
   }
 );
 
@@ -90,7 +106,10 @@ export const certificationsAtom = atom(
   (get) => get(resumeDataAtom).certifications,
   (get, set, certifications: CertificationType[]) => {
     const current = get(resumeDataAtom);
-    set(resumeDataAtom, { ...current, certifications });
+    const newData = { ...current, certifications };
+    set(resumeDataAtom, newData);
+    // 履歴に追加
+    set(addHistoryEntryAtom, { data: newData, description: '資格を変更' });
   }
 );
 
@@ -102,7 +121,10 @@ export const selfPromotionAtom = atom(
   (get) => get(resumeDataAtom).selfPromotion,
   (get, set, selfPromotion: SelfPromotionType[]) => {
     const current = get(resumeDataAtom);
-    set(resumeDataAtom, { ...current, selfPromotion });
+    const newData = { ...current, selfPromotion };
+    set(resumeDataAtom, newData);
+    // 履歴に追加
+    set(addHistoryEntryAtom, { data: newData, description: '自己PRを変更' });
   }
 );
 
@@ -111,3 +133,49 @@ export const selfPromotionAtom = atom(
  * @returns {boolean} 編集モード
  */
 export const isEditModeAtom = atom(true);
+
+/**
+ * 履歴から復元してメインデータを更新するatom
+ * @param data 復元するデータ
+ */
+export const restoreResumeDataAtom = atom(
+  null,
+  (get, set, data: ResumeData) => {
+    set(resumeDataAtom, data);
+  }
+);
+
+/**
+ * Undoアクション（もとに戻す）
+ * @returns {boolean} Undo成功したかどうか
+ */
+export const performUndoAtom = atom(
+  null,
+  (get, set): boolean => {
+    const restoredData = set(undoAtom);
+    if (restoredData) {
+      set(restoreResumeDataAtom, restoredData);
+      return true;
+    }
+    return false;
+  }
+);
+
+/**
+ * Redoアクション（やり直し）
+ * @returns {boolean} Redo成功したかどうか
+ */
+export const performRedoAtom = atom(
+  null,
+  (get, set): boolean => {
+    const restoredData = set(redoAtom);
+    if (restoredData) {
+      set(restoreResumeDataAtom, restoredData);
+      return true;
+    }
+    return false;
+  }
+);
+
+// 履歴機能のatomを再エクスポート
+export { canUndoAtom, canRedoAtom, historyStatsAtom } from './historyAtoms';

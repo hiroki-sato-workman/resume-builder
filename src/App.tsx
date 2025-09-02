@@ -15,6 +15,8 @@ import Certifications from './components/Certifications';
 import SelfPromotion from './components/SelfPromotion';
 import ResumeFooter from './components/ResumeFooter';
 import ViewModeToggle from './components/ViewModeToggle';
+import HistoryToolbar from './shared/components/HistoryToolbar';
+import { useKeyboardShortcuts } from './shared/hooks/useKeyboardShortcuts';
 import { getViewModeStyles } from './styles/viewModeStyles';
 import { theme } from './theme';
 import ResumeTitle from './components/ResumeTitle';
@@ -24,11 +26,15 @@ import Specialties from './components/Specialties';
 const App: FC = () => {
   const [isEditMode, setIsEditMode] = useAtom(isEditModeAtom);
 
+  // キーボードショートカットを有効化
+  useKeyboardShortcuts();
+
   const viewModeStyles = getViewModeStyles(isEditMode);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <HistoryToolbar />
       <ViewModeToggle
         isEditMode={isEditMode}
         onToggle={() => setIsEditMode(!isEditMode)}
